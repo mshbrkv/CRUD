@@ -1,20 +1,27 @@
 package com.maria.crudapp.controller;
 
+import com.maria.crudapp.dto.ParticipantDTO;
 import com.maria.crudapp.entity.Participant;
 import com.maria.crudapp.service.ParticipantService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequiredArgsConstructor
 public class ParticipantController {
-    @Autowired
-    private ParticipantService participantService;
+
+    private final ParticipantService participantService;
 
     @PostMapping("/participants")
-    public Participant saveParticipant(@Valid @RequestBody Participant participant) {
+    public Participant saveParticipant(@Valid @RequestBody ParticipantDTO participantDTO) {
+        Participant participant = new Participant();
+        participant.setExternalId(participantDTO.getExternalId());
+        participant.setName(participantDTO.getName());
+        participant.setCountry(participantDTO.getCountry());
+        participant.setSport(participantDTO.getSport());
         return participantService.saveParticipant(participant);
     }
 
@@ -24,7 +31,13 @@ public class ParticipantController {
     }
 
     @PutMapping("/participants/{id}")
-    public Participant updateParticipant(@RequestBody Participant participant, @PathVariable("id") UUID participantId) {
+    public Participant updateParticipant(@RequestBody ParticipantDTO participantDTO, @PathVariable("id") UUID participantId) {
+        Participant participant = new Participant();
+        participant.setExternalId(participantDTO.getExternalId());
+        participant.setName(participantDTO.getName());
+        participant.setCountry(participantDTO.getCountry());
+        participant.setSport(participantDTO.getSport());
+
         return participantService.updateParticipant(participant, participantId);
     }
 
