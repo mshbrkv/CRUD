@@ -4,7 +4,6 @@ import com.maria.crudapp.entity.Participant;
 import com.maria.crudapp.repository.ParticipantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.UUID;
 
