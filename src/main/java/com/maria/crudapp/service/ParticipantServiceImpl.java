@@ -5,13 +5,11 @@ import com.maria.crudapp.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.UUID;
-
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ParticipantServiceImpl implements ParticipantService{
-
+public class ParticipantServiceImpl implements ParticipantService {
     private final ParticipantRepository participantRepository;
 
     @Override
@@ -25,20 +23,21 @@ public class ParticipantServiceImpl implements ParticipantService{
     }
 
     @Override
-    public Participant updateParticipant(Participant newParticipant, UUID participantId) {
-        return participantRepository.findById(participantId).map(participant -> {
-            participant.setName(newParticipant.getName());
-            participant.setSport(newParticipant.getSport());
-            participant.setCountry(newParticipant.getCountry());
-            participant.setExternalId(newParticipant.getExternalId());
-            return participantRepository.save(newParticipant);
-
-        }).orElseGet(()-> participantRepository.save(newParticipant));
-
+    public Participant updateParticipant(Participant newParticipant, Long participantId) {
+        Optional<Participant> participant=participantRepository.findById(participantId);
+        if (participant.isPresent()){
+            Participant editParticipant = participant.get();
+            editParticipant.setName(newParticipant.getName());
+            editParticipant.setSport(newParticipant.getSport());
+            editParticipant.setCountry(newParticipant.getCountry());
+            editParticipant.setExternalId(newParticipant.getExternalId());
+            return participantRepository.save(editParticipant);
+        }
+        return newParticipant;
     }
 
     @Override
-    public void deleteParticipantById(UUID participantId) {
-participantRepository.deleteById(participantId);
+    public void deleteParticipantById(Long participantId) {
+        participantRepository.deleteById(participantId);
     }
 }
