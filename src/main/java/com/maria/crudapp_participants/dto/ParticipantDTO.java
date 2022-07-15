@@ -1,6 +1,7 @@
-package com.maria.crudapp.dto;
+package com.maria.crudapp_participants.dto;
 
 import lombok.Data;
+
 @Data
 public class ParticipantDTO {
     private Long id;

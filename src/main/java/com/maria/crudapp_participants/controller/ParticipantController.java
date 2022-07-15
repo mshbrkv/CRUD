@@ -1,8 +1,8 @@
-package com.maria.crudapp.controller;
+package com.maria.crudapp_participants.controller;
 
-import com.maria.crudapp.dto.ParticipantDTO;
-import com.maria.crudapp.entity.Participant;
-import com.maria.crudapp.service.ParticipantService;
+import com.maria.crudapp_participants.dto.ParticipantDTO;
+import com.maria.crudapp_participants.entity.Participant;
+import com.maria.crudapp_participants.service.ParticipantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -10,10 +10,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/participants")
 public class ParticipantController {
     private final ParticipantService participantService;
 
-    @PostMapping("/participants")
+    @PostMapping
     public Participant saveParticipant(@Valid @RequestBody ParticipantDTO participantDTO) {
         Participant participant = new Participant();
         participant.setExternalId(participantDTO.getExternalId());
@@ -23,12 +24,12 @@ public class ParticipantController {
         return participantService.saveParticipant(participant);
     }
 
-    @GetMapping("/participants")
+    @GetMapping
     public List<Participant> fetchParticipantList() {
         return participantService.fetchParticipantList();
     }
 
-    @PutMapping("/participants/{id}")
+    @PutMapping("/{id}")
     public Participant updateParticipant(@RequestBody ParticipantDTO participantDTO, @PathVariable("id") Long participantId) {
         Participant participant = new Participant();
         participant.setExternalId(participantDTO.getExternalId());
@@ -38,7 +39,12 @@ public class ParticipantController {
         return participantService.updateParticipant(participant, participantId);
     }
 
-    @DeleteMapping("/participants/{id}")
+@GetMapping("/search")
+public List <Participant> searchFlexible (@RequestParam("query") String query){
+        return participantService.searchFlexible(query);
+}
+
+    @DeleteMapping("/{id}")
     public String deleteParticipantById(@PathVariable("id") Long participantId) {
         participantService.deleteParticipantById(participantId);
         return "Deleted successfully";

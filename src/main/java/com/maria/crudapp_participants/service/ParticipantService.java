@@ -1,6 +1,7 @@
-package com.maria.crudapp.service;
+package com.maria.crudapp_participants.service;
 
-import com.maria.crudapp.entity.Participant;
+import com.maria.crudapp_participants.entity.Participant;
+
 import java.util.List;
 
 public interface ParticipantService {
@@ -9,6 +10,8 @@ public interface ParticipantService {
     List<Participant> fetchParticipantList();
 
     Participant updateParticipant(Participant participant, Long participantId);
+
+    List <Participant> searchFlexible (String searchString);
 
     void deleteParticipantById(Long participantId);
 }

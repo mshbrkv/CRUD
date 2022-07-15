@@ -1,4 +1,4 @@
-package com.maria.crudapp.entity;
+package com.maria.crudapp_participants.entity;
 
 import lombok.*;
 import javax.persistence.*;
