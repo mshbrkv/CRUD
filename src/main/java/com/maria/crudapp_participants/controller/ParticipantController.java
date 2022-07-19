@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -20,22 +18,20 @@ public class ParticipantController {
     @GetMapping
     public String fetchParticipantList(Model model) {
         List<Participant> allParticipants=participantService.fetchParticipantList();
-//        List<Participant> allParticipants = List.of(new Participant(1L, "name", "sport", "country", 122));
         model.addAttribute("allParticipants", allParticipants);
         return "main_page";
     }
 
-    @GetMapping("/new_participant")
+    @GetMapping("/new")
     public String newParticipantPage(Model model){
         Participant participant = new Participant();
         model.addAttribute("participant", participant);
-        return "new_participant";
+        return "/new_participant";
     }
 
 
-
     @PostMapping("/save")
-    public String saveParticipant(@Valid @RequestBody @ModelAttribute("participant") ParticipantDTO participantDTO) {
+    public String saveParticipant(@ModelAttribute("participant") ParticipantDTO participantDTO) {
         Participant participant = new Participant();
         participant.setExternalId(participantDTO.getExternalId());
         participant.setName(participantDTO.getName());
@@ -44,6 +40,8 @@ public class ParticipantController {
          participantService.saveParticipant(participant);
          return "redirect:/";
     }
+
+
 
     @PutMapping("/{id}")
     public Participant updateParticipant(@RequestBody ParticipantDTO participantDTO, @PathVariable("id") Long participantId) {
