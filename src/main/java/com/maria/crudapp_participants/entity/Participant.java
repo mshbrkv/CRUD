@@ -1,6 +1,7 @@
 package com.maria.crudapp_participants.entity;
 
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,8 +12,7 @@ import javax.persistence.*;
 @Table(name = "Participants")
 public class Participant {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue
     private Long id;
     private String name;
     private String sport;

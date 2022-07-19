@@ -4,9 +4,12 @@ import com.maria.crudapp_participants.dto.ParticipantDTO;
 import com.maria.crudapp_participants.entity.Participant;
 import com.maria.crudapp_participants.service.ParticipantService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -17,7 +20,7 @@ public class ParticipantController {
 
     @GetMapping
     public String fetchParticipantList(Model model) {
-        List<Participant> allParticipants=participantService.fetchParticipantList();
+        List<Participant> allParticipants = participantService.fetchParticipantList();
         model.addAttribute("allParticipants", allParticipants);
         return "main_page";
     }
@@ -30,17 +33,16 @@ public class ParticipantController {
     }
 
 
-    @PostMapping("/save")
-    public String saveParticipant(@ModelAttribute("participant") ParticipantDTO participantDTO) {
+    @PostMapping("save")
+    public String saveParticipant(@Valid @RequestBody @ModelAttribute("participant") ParticipantDTO participantDTO) {
         Participant participant = new Participant();
         participant.setExternalId(participantDTO.getExternalId());
         participant.setName(participantDTO.getName());
         participant.setCountry(participantDTO.getCountry());
         participant.setSport(participantDTO.getSport());
-         participantService.saveParticipant(participant);
-         return "redirect:/";
+        participantService.saveParticipant(participant);
+        return "redirect:/";
     }
-
 
 
     @PutMapping("/{id}")
