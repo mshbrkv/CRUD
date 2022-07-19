@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Participants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div>
+    <table>
+        <caption>Participants</caption>
+
+        <a>Add new participant</a>
+
+
+        <thead>
+        <tr>
+            <th>Participant ID</th>
+            <th>Name</th>
+            <th>Sport</th>
+            <th>Country</th>
+            <th>External ID</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="participant: ${allParticipants}">
+            <td th:text="${participant.id}"></td>
+            <td th:text="${participant.name}"></td>
+            <td th:text="${participant.sport}"></td>
+            <td th:text="${participant.country}"></td>
+            <td th:text="${participant.externalId}"></td>
+            <td>
+                <a>Edit</a>
+                <a>Delete</a>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>

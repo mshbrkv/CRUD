@@ -8,6 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "Participants")
 public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
