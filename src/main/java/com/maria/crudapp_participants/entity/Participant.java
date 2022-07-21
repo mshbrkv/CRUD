@@ -20,11 +20,4 @@ public class Participant {
     private String country;
     private int externalId;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

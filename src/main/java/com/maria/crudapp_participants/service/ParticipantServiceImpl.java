@@ -4,6 +4,7 @@ import com.maria.crudapp_participants.entity.Participant;
 import com.maria.crudapp_participants.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -13,9 +14,10 @@ public class ParticipantServiceImpl implements ParticipantService {
     private final ParticipantRepository participantRepository;
 
     @Override
-    public Participant saveParticipant(Participant participant) {
-        return participantRepository.save(participant);
+    public void saveParticipant(Participant participant) {
+        participantRepository.save(participant);
     }
+
 
     @Override
     public List<Participant> fetchParticipantList() {
@@ -23,17 +25,27 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
-    public Participant updateParticipant(Participant newParticipant, Long participantId) {
-        Optional<Participant> participant=participantRepository.findById(participantId);
-        if (participant.isPresent()){
+    public Participant getParticipantById(Long participantId) {
+        Optional<Participant> optional = participantRepository.findById(participantId);
+        Participant participant = null;
+        if (optional.isPresent()) {
+            participant = optional.get();
+        }
+        return participant;
+    }
+
+    @Override
+    public void updateParticipant(Participant newParticipant, Long participantId) {
+        Optional<Participant> participant = participantRepository.findById(participantId);
+        if (participant.isPresent()) {
             Participant editParticipant = participant.get();
+            editParticipant.setId(newParticipant.getId());
             editParticipant.setName(newParticipant.getName());
             editParticipant.setSport(newParticipant.getSport());
             editParticipant.setCountry(newParticipant.getCountry());
             editParticipant.setExternalId(newParticipant.getExternalId());
-            return participantRepository.save(editParticipant);
+            participantRepository.save(editParticipant);
         }
-        return newParticipant;
     }
 
     @Override

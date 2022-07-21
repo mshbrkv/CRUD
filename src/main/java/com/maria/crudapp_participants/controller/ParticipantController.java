@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Controller
@@ -14,6 +15,7 @@ import java.util.List;
 @RequestMapping("/participants")
 public class ParticipantController {
     private final ParticipantService participantService;
+    private static final String REDIRECTMAINPAGE = "redirect:/participants/";
 
     @GetMapping
     public String fetchParticipantList(Model model) {
@@ -29,6 +31,14 @@ public class ParticipantController {
         return "new_participant";
     }
 
+    @GetMapping("{id}")
+    public String updateParticipantPage(@PathVariable("id") Long participantId, Model model) {
+        Participant participant = participantService.getParticipantById(participantId);
+        model.addAttribute("participant", participant);
+        return "update_participant";
+    }
+
+
     @PostMapping("save")
     public String saveParticipant(@RequestBody @ModelAttribute("participant") ParticipantDTO participantDTO) {
         Participant participant = new Participant();
@@ -37,20 +47,23 @@ public class ParticipantController {
         participant.setCountry(participantDTO.getCountry());
         participant.setSport(participantDTO.getSport());
         participantService.saveParticipant(participant);
-        return "redirect:/participants/";
+        return REDIRECTMAINPAGE;
     }
 
-    @PutMapping("/{id}")
-    public Participant updateParticipant(@RequestBody ParticipantDTO participantDTO, @PathVariable("id") Long participantId) {
+    @PostMapping("update")
+    public String updateParticipant(@RequestBody @ModelAttribute("participant") ParticipantDTO participantDTO) {
         Participant participant = new Participant();
+        participant.setId(participantDTO.getId());
         participant.setExternalId(participantDTO.getExternalId());
         participant.setName(participantDTO.getName());
         participant.setCountry(participantDTO.getCountry());
         participant.setSport(participantDTO.getSport());
-        return participantService.updateParticipant(participant, participantId);
+        participantService.updateParticipant(participant, participantDTO.getId());
+        return REDIRECTMAINPAGE;
     }
 
-    @GetMapping("/search")
+
+    @GetMapping("search")
     public List<Participant> searchFlexible(@RequestParam("query") String query) {
         return participantService.searchFlexible(query);
     }
@@ -58,7 +71,7 @@ public class ParticipantController {
     @PostMapping("delete/{id}")
     public String deleteParticipantById(@PathVariable("id") Long participantId) {
         participantService.deleteParticipantById(participantId);
-        return "redirect:/participants/";
+        return REDIRECTMAINPAGE;
     }
 }
 

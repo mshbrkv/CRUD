@@ -11,6 +11,7 @@
 <div>
     <table>
         <caption>Participants</caption>
+
         <a th:href="new">Add new participant</a>
         <thead>
         <tr>
@@ -33,6 +34,11 @@
                 <form th:action="@{delete/{id}(id=${participant.id})}" method="post">
                     <button type="submit">Delete</button>
                 </form>
+                <form th:action="@{{id}(id=${participant.id})}" method="get">
+                    <button type="submit">Update</button>
+                </form>
+
+
             </td>
         </tr>
         </tbody>
