@@ -4,7 +4,6 @@ import com.maria.crudapp_participants.entity.Participant;
 import com.maria.crudapp_participants.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 

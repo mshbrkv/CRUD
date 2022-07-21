@@ -11,8 +11,13 @@
 <div>
     <table>
         <caption>Participants</caption>
+        <form th:action="@{participants}" method="get">
+            <input type="text" th:name="query">
+            <button type="submit">Search</button>
+        </form>
 
-        <a th:href="new">Add new participant</a>
+        <br><br>
+        <a th:href="@{participants/new}">Add new participant</a> <br>
         <thead>
         <tr>
             <th>Participant ID</th>
@@ -31,14 +36,12 @@
             <td th:text="${participant.country}"></td>
             <td th:text="${participant.externalId}"></td>
             <td>
-                <form th:action="@{delete/{id}(id=${participant.id})}" method="post">
+                <form th:action="@{participants/delete/{id}(id=${participant.id})}" method="post">
                     <button type="submit">Delete</button>
                 </form>
-                <form th:action="@{{id}(id=${participant.id})}" method="get">
+                <form th:action="@{participants/{id}(id=${participant.id})}" method="get">
                     <button type="submit">Update</button>
                 </form>
-
-
             </td>
         </tr>
         </tbody>

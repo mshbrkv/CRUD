@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Controller
@@ -15,12 +14,18 @@ import java.util.List;
 @RequestMapping("/participants")
 public class ParticipantController {
     private final ParticipantService participantService;
-    private static final String REDIRECTMAINPAGE = "redirect:/participants/";
+    private static final String REDIRECTMAINPAGE = "redirect:/participants";
 
     @GetMapping
-    public String fetchParticipantList(Model model) {
-        List<Participant> allParticipants = participantService.fetchParticipantList();
-        model.addAttribute("allParticipants", allParticipants);
+    public String fetchParticipantList(@RequestParam(required = false) String query, Model model) {
+        if (query == null) {
+            List<Participant> allParticipants = participantService.fetchParticipantList();
+            model.addAttribute("allParticipants", allParticipants);
+        } else {
+            List<Participant> allParticipants =  participantService.searchFlexible(query);
+            model.addAttribute("allParticipants", allParticipants);
+            model.addAttribute("query", query);
+        }
         return "main_page";
     }
 
@@ -37,7 +42,6 @@ public class ParticipantController {
         model.addAttribute("participant", participant);
         return "update_participant";
     }
-
 
     @PostMapping("save")
     public String saveParticipant(@RequestBody @ModelAttribute("participant") ParticipantDTO participantDTO) {
@@ -62,19 +66,9 @@ public class ParticipantController {
         return REDIRECTMAINPAGE;
     }
 
-
-    @GetMapping("search")
-    public List<Participant> searchFlexible(@RequestParam("query") String query) {
-        return participantService.searchFlexible(query);
-    }
-
-    @PostMapping("delete/{id}")
+    @PostMapping("/delete/{id}")
     public String deleteParticipantById(@PathVariable("id") Long participantId) {
         participantService.deleteParticipantById(participantId);
         return REDIRECTMAINPAGE;
     }
 }
-
-
-
-
