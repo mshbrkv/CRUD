@@ -3,7 +3,13 @@ package com.maria.crudapp_participants.service;
 import com.maria.crudapp_participants.entity.Participant;
 import com.maria.crudapp_participants.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,8 +19,8 @@ public class ParticipantServiceImpl implements ParticipantService {
     private final ParticipantRepository participantRepository;
 
     @Override
-    public void saveParticipant(Participant participant) {
-        participantRepository.save(participant);
+    public Participant saveParticipant(Participant participant) {
+        return participantRepository.save(participant);
     }
 
 
@@ -34,7 +40,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
-    public void updateParticipant(Participant newParticipant, Long participantId) {
+    public Participant updateParticipant(Participant newParticipant, Long participantId) {
         Optional<Participant> participant = participantRepository.findById(participantId);
         if (participant.isPresent()) {
             Participant editParticipant = participant.get();
@@ -43,8 +49,9 @@ public class ParticipantServiceImpl implements ParticipantService {
             editParticipant.setSport(newParticipant.getSport());
             editParticipant.setCountry(newParticipant.getCountry());
             editParticipant.setExternalId(newParticipant.getExternalId());
-            participantRepository.save(editParticipant);
+            return participantRepository.save(editParticipant);
         }
+        return null;
     }
 
     @Override
@@ -56,4 +63,13 @@ public class ParticipantServiceImpl implements ParticipantService {
     public void deleteParticipantById(Long participantId) {
         participantRepository.deleteById(participantId);
     }
+
+
+    @Override
+    public Page<Participant> findPage(final int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, 5);
+        return participantRepository.findAll(pageable);
+    }
+
+
 }

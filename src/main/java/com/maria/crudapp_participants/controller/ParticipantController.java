@@ -9,12 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/participants")
 public class ParticipantController {
     private final ParticipantService participantService;
-    private static final String REDIRECTMAINPAGE = "redirect:/participants";
+    private static final String REDIRECT_MAIN_PAGE = "redirect:/participants";
 
     @GetMapping
     public String fetchParticipantList(@RequestParam(required = false) String query, Model model) {
@@ -22,10 +23,11 @@ public class ParticipantController {
             List<Participant> allParticipants = participantService.fetchParticipantList();
             model.addAttribute("allParticipants", allParticipants);
         } else {
-            List<Participant> allParticipants =  participantService.searchFlexible(query);
+            List<Participant> allParticipants = participantService.searchFlexible(query);
             model.addAttribute("allParticipants", allParticipants);
             model.addAttribute("query", query);
         }
+
         return "main_page";
     }
 
@@ -51,7 +53,7 @@ public class ParticipantController {
         participant.setCountry(participantDTO.getCountry());
         participant.setSport(participantDTO.getSport());
         participantService.saveParticipant(participant);
-        return REDIRECTMAINPAGE;
+        return REDIRECT_MAIN_PAGE;
     }
 
     @PostMapping("update")
@@ -63,12 +65,12 @@ public class ParticipantController {
         participant.setCountry(participantDTO.getCountry());
         participant.setSport(participantDTO.getSport());
         participantService.updateParticipant(participant, participantDTO.getId());
-        return REDIRECTMAINPAGE;
+        return REDIRECT_MAIN_PAGE;
     }
 
     @PostMapping("/delete/{id}")
     public String deleteParticipantById(@PathVariable("id") Long participantId) {
         participantService.deleteParticipantById(participantId);
-        return REDIRECTMAINPAGE;
+        return REDIRECT_MAIN_PAGE;
     }
 }

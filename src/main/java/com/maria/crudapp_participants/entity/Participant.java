@@ -3,6 +3,7 @@ package com.maria.crudapp_participants.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,5 +20,6 @@ public class Participant {
     private String sport;
     private String country;
     private int externalId;
+
 
 }
