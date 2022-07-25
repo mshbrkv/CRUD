@@ -1,8 +1,9 @@
 package com.maria.crudapp_participants.service;
 
 import com.maria.crudapp_participants.entity.Participant;
-import org.springframework.data.domain.Page;
+
 import java.util.List;
+
 
 public interface ParticipantService {
     Participant saveParticipant(Participant participant);
@@ -13,10 +14,7 @@ public interface ParticipantService {
 
     List <Participant> searchFlexible (String searchString);
 
-    void deleteParticipantById(Long participantId);
+    Participant deleteParticipantById(Long participantId);
 
     Participant getParticipantById(Long participantId);
-
-    Page <Participant> findPage(int pageNumber);
-
 }

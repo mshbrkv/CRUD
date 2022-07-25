@@ -92,6 +92,12 @@
             <version>2.7.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

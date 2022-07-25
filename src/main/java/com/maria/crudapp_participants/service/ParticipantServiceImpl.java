@@ -3,13 +3,7 @@ package com.maria.crudapp_participants.service;
 import com.maria.crudapp_participants.entity.Participant;
 import com.maria.crudapp_participants.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,8 +44,10 @@ public class ParticipantServiceImpl implements ParticipantService {
             editParticipant.setCountry(newParticipant.getCountry());
             editParticipant.setExternalId(newParticipant.getExternalId());
             return participantRepository.save(editParticipant);
+        } else {
+            return newParticipant;
         }
-        return null;
+
     }
 
     @Override
@@ -60,16 +56,8 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
-    public void deleteParticipantById(Long participantId) {
+    public Participant deleteParticipantById(Long participantId) {
         participantRepository.deleteById(participantId);
+        return null;
     }
-
-
-    @Override
-    public Page<Participant> findPage(final int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber - 1, 5);
-        return participantRepository.findAll(pageable);
-    }
-
-
 }
