@@ -1,12 +1,13 @@
 package com.maria.crudapp_participants.controller;
 
-import com.maria.crudapp_participants.dto.ParticipantDTO;
+
 import com.maria.crudapp_participants.entity.Participant;
 import com.maria.crudapp_participants.service.ParticipantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 
@@ -22,13 +23,19 @@ public class ParticipantController {
         if (query == null) {
             List<Participant> allParticipants = participantService.fetchParticipantList();
             model.addAttribute("allParticipants", allParticipants);
+            return "main_page";
         } else {
             List<Participant> allParticipants = participantService.searchFlexible(query);
-            model.addAttribute("allParticipants", allParticipants);
-            model.addAttribute("query", query);
-        }
+            if (allParticipants.size() > 0) {
+                model.addAttribute("allParticipants", allParticipants);
+                model.addAttribute("query", query);
+                return "main_page";
 
-        return "main_page";
+            } else {
+                return "not_found";
+            }
+
+        }
     }
 
     @GetMapping("/new")
@@ -46,25 +53,14 @@ public class ParticipantController {
     }
 
     @PostMapping("save")
-    public String saveParticipant(@RequestBody @ModelAttribute("participant") ParticipantDTO participantDTO) {
-        Participant participant = new Participant();
-        participant.setExternalId(participantDTO.getExternalId());
-        participant.setName(participantDTO.getName());
-        participant.setCountry(participantDTO.getCountry());
-        participant.setSport(participantDTO.getSport());
+    public String saveParticipant(@RequestBody @ModelAttribute("participant") Participant participant) {
         participantService.saveParticipant(participant);
         return REDIRECT_MAIN_PAGE;
     }
 
     @PostMapping("update")
-    public String updateParticipant(@RequestBody @ModelAttribute("participant") ParticipantDTO participantDTO) {
-        Participant participant = new Participant();
-        participant.setId(participantDTO.getId());
-        participant.setExternalId(participantDTO.getExternalId());
-        participant.setName(participantDTO.getName());
-        participant.setCountry(participantDTO.getCountry());
-        participant.setSport(participantDTO.getSport());
-        participantService.updateParticipant(participant, participantDTO.getId());
+    public String updateParticipant(@RequestBody @ModelAttribute("participant") Participant newParticipant) {
+        participantService.updateParticipant(newParticipant, newParticipant.getId());
         return REDIRECT_MAIN_PAGE;
     }
 
