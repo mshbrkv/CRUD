@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,12 +34,12 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
-    public Optional<Participant> getParticipantById(Long participantId) {
+    public Optional<Participant> getParticipantById(UUID participantId) {
         return participantRepository.findById(participantId);
     }
 
     @Override
-    public Participant updateParticipant(Participant newParticipant, Long participantId) {
+    public Participant updateParticipant(Participant newParticipant, UUID participantId) {
         Optional<Participant> participant = participantRepository.findById(participantId);
         if (participant.isPresent()) {
             Participant editParticipant = participant.get();
@@ -57,7 +58,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 
     @Override
-    public void deleteParticipantById(Long participantId) {
+    public void deleteParticipantById(UUID participantId) {
        participantRepository.deleteById(participantId);
     }
 

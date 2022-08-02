@@ -16,9 +16,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,7 +32,7 @@ class ParticipantServiceImplTest {
     ParticipantService participantService;
 
     private static Stream<Arguments> updateParticipantProvider() {
-        Participant fromBD = new Participant(1L, "Sferiff", "football", "Moldova", 342);
+        Participant fromBD = new Participant(UUID.randomUUID(), "Sferiff", "football", "Moldova", 342);
         Participant edit = fromBD;
         edit.setName("Test");
 
@@ -43,7 +43,7 @@ class ParticipantServiceImplTest {
     }
 
     private static Stream<Arguments> getParticipantByIdProvider() {
-        Optional<Participant> fromBD = Optional.of(new Participant(1L, "Sferiff", "football", "Moldova", 342));
+        Optional<Participant> fromBD = Optional.of(new Participant(UUID.randomUUID(), "Sferiff", "football", "Moldova", 342));
 
         return Stream.of(
                 Arguments.of(fromBD),
@@ -52,9 +52,9 @@ class ParticipantServiceImplTest {
     }
 
     private static Stream<Arguments> searchFlexibleProvider() {
-        Participant fromBD1 = new Participant(1L, "Sheriff", "football", "Moldova", 342);
-        Participant fromBD2 = new Participant(2L, "Sheriff", "football", "Moldova", 342);
-        Participant fromBD3 = new Participant(3L, "Colibri", "dance", "Moldova", 654);
+        Participant fromBD1 = new Participant(UUID.randomUUID(), "Sheriff", "football", "Moldova", 342);
+        Participant fromBD2 = new Participant(UUID.randomUUID(), "Sheriff", "football", "Moldova", 342);
+        Participant fromBD3 = new Participant(UUID.randomUUID(), "Colibri", "dance", "Moldova", 654);
         List<Participant> participants1 = Arrays.asList(fromBD1, fromBD2);
         List<Participant> participants2 = List.of(fromBD3);
 
@@ -68,7 +68,7 @@ class ParticipantServiceImplTest {
 
     @Test
     void saveParticipant() {
-        Participant expected = new Participant(1L, "Sferiff", "football", "Moldova", 342);
+        Participant expected = new Participant(UUID.randomUUID(), "Sferiff", "football", "Moldova", 342);
 
 
         when(participantRepository.save(expected)).thenReturn(expected);
@@ -81,8 +81,8 @@ class ParticipantServiceImplTest {
     @Test
     void fetchParticipantList() {
         Pageable pageable = PageRequest.of(0, 5);
-        Participant participant1 = new Participant(1L, "Sferiff", "football", "Moldova", 342);
-        Participant participant2 = new Participant(2L, "Sferiff", "football", "Moldova", 654);
+        Participant participant1 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
+        Participant participant2 = new Participant(UUID.fromString("9d9260ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 654);
         when(participantRepository.findAll(pageable).toList()).thenReturn(Arrays.asList(participant1, participant2));
         List<Participant> participants = participantService.fetchParticipantList(1, 5);
         Assertions.assertEquals(2, participants.size(), "fetchParticipantList should return 2");
@@ -91,9 +91,9 @@ class ParticipantServiceImplTest {
     @ParameterizedTest
     @MethodSource("getParticipantByIdProvider")
     void getParticipantById(Optional<Participant> participant) {
-        when(participantRepository.findById(anyLong())).thenReturn(participant);
+        when(participantRepository.findById(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"))).thenReturn(participant);
 
-        Optional<Participant> actual = participantService.getParticipantById(1L);
+        Optional<Participant> actual = participantService.getParticipantById(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"));
 
         Assertions.assertEquals(participant, actual);
     }
@@ -101,9 +101,9 @@ class ParticipantServiceImplTest {
     @ParameterizedTest
     @MethodSource("updateParticipantProvider")
     void updateParticipant(Participant participant, Participant edit) {
-        when(participantRepository.findById(1L)).thenReturn(Optional.ofNullable(participant));
+        when(participantRepository.findById(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"))).thenReturn(Optional.ofNullable(participant));
 
-        Participant actual = participantService.updateParticipant(edit, 1L);
+        Participant actual = participantService.updateParticipant(edit, UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"));
 
         Assertions.assertNotEquals(participant, actual);
     }
@@ -121,8 +121,8 @@ class ParticipantServiceImplTest {
 
     @Test
     void deleteParticipantById() {
-        participantService.deleteParticipantById(anyLong());
-        verify(participantRepository).deleteById(anyLong());
+        participantService.deleteParticipantById(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"));
+        verify(participantRepository).deleteById(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"));
 
     }
 

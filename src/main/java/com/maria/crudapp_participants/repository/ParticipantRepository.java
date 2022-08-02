@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
+import java.util.UUID;
 
-public interface ParticipantRepository extends JpaRepository<Participant, Long> {
+public interface ParticipantRepository extends JpaRepository<Participant, UUID> {
     @Query("""
             select p from Participant p
             where upper(p.name) like upper(concat('%', :searchString, '%'))

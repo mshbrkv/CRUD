@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Controller
@@ -19,7 +20,7 @@ public class ParticipantController {
 
     @GetMapping
     public String fetchParticipantList(@RequestParam(required = false) String query, @RequestParam(defaultValue = "1") Integer page, Model model) {
-        int ITEMS_PER_PAGE = 5;
+        int ITEMS_PER_PAGE = 10;
         if (query == null) {
             List<Participant> allParticipants = participantService.fetchParticipantList(page, ITEMS_PER_PAGE);
             model.addAttribute("allParticipants", allParticipants);
@@ -45,7 +46,7 @@ public class ParticipantController {
     }
 
     @GetMapping("{id}")
-    public String updateParticipantPage(@PathVariable("id") Long participantId, Model model) {
+    public String updateParticipantPage(@PathVariable("id") UUID participantId, Model model) {
         participantService.getParticipantById(participantId)
                 .map(participant -> model.addAttribute("participant", participant));
         return "update_participant";
@@ -64,7 +65,7 @@ public class ParticipantController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteParticipantById(@PathVariable("id") Long participantId) {
+    public String deleteParticipantById(@PathVariable("id") UUID participantId) {
         participantService.deleteParticipantById(participantId);
         return REDIRECT_MAIN_PAGE;
     }

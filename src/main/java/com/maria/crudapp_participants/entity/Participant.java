@@ -1,25 +1,27 @@
 package com.maria.crudapp_participants.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "Participants")
+@Table(name = "participants")
 public class Participant {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @Type(type = "uuid-char")
     @Column(name = "id", nullable = false)
-    private Long id;
+    private UUID id = UUID.randomUUID();
     private String name;
     private String sport;
     private String country;
     private int externalId;
-
 
 }
