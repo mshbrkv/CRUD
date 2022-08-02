@@ -1,6 +1,5 @@
 package com.maria.crudapp_participants.controller;
 
-
 import com.maria.crudapp_participants.entity.Participant;
 import com.maria.crudapp_participants.service.ParticipantService;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +18,18 @@ public class ParticipantController {
     private static final String REDIRECT_MAIN_PAGE = "redirect:/participants";
 
     @GetMapping
-    public String fetchParticipantList(@RequestParam(required = false) String query, Model model) {
+    public String fetchParticipantList(@RequestParam(required = false) String query, @RequestParam(defaultValue = "1") Integer page, Model model) {
+        int ITEMS_PER_PAGE = 5;
         if (query == null) {
-            List<Participant> allParticipants = participantService.fetchParticipantList();
+            List<Participant> allParticipants = participantService.fetchParticipantList(page, ITEMS_PER_PAGE);
             model.addAttribute("allParticipants", allParticipants);
             return "main_page";
         } else {
-            List<Participant> allParticipants = participantService.searchFlexible(query);
+            List<Participant> allParticipants = participantService.searchFlexible(query, page, ITEMS_PER_PAGE);
             if (allParticipants.size() > 0) {
                 model.addAttribute("allParticipants", allParticipants);
                 model.addAttribute("query", query);
                 return "main_page";
-
             } else {
                 return "not_found";
             }
@@ -47,8 +46,8 @@ public class ParticipantController {
 
     @GetMapping("{id}")
     public String updateParticipantPage(@PathVariable("id") Long participantId, Model model) {
-        Participant participant = participantService.getParticipantById(participantId);
-        model.addAttribute("participant", participant);
+        participantService.getParticipantById(participantId)
+                .map(participant -> model.addAttribute("participant", participant));
         return "update_participant";
     }
 
@@ -69,4 +68,6 @@ public class ParticipantController {
         participantService.deleteParticipantById(participantId);
         return REDIRECT_MAIN_PAGE;
     }
+
+
 }

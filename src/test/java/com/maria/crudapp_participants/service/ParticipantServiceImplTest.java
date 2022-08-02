@@ -10,12 +10,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -39,7 +43,7 @@ class ParticipantServiceImplTest {
     }
 
     private static Stream<Arguments> getParticipantByIdProvider() {
-        Participant fromBD = new Participant(1L, "Sferiff", "football", "Moldova", 342);
+        Optional<Participant> fromBD = Optional.of(new Participant(1L, "Sferiff", "football", "Moldova", 342));
 
         return Stream.of(
                 Arguments.of(fromBD),
@@ -65,9 +69,10 @@ class ParticipantServiceImplTest {
     @Test
     void saveParticipant() {
         Participant expected = new Participant(1L, "Sferiff", "football", "Moldova", 342);
-        Participant actual = participantService.saveParticipant(expected);
+
 
         when(participantRepository.save(expected)).thenReturn(expected);
+        Participant actual = participantService.saveParticipant(expected);
 
         Assertions.assertEquals(expected, actual, "Object doesn't save");
         Assertions.assertNotNull(actual, "saveParticipant shouldn't return null ");
@@ -75,21 +80,20 @@ class ParticipantServiceImplTest {
 
     @Test
     void fetchParticipantList() {
+        Pageable pageable = PageRequest.of(0, 5);
         Participant participant1 = new Participant(1L, "Sferiff", "football", "Moldova", 342);
         Participant participant2 = new Participant(2L, "Sferiff", "football", "Moldova", 654);
-        List<Participant> participants = participantService.fetchParticipantList();
-
-        when(participantRepository.findAll()).thenReturn(Arrays.asList(participant1, participant2));
-
+        when(participantRepository.findAll(pageable).toList()).thenReturn(Arrays.asList(participant1, participant2));
+        List<Participant> participants = participantService.fetchParticipantList(1, 5);
         Assertions.assertEquals(2, participants.size(), "fetchParticipantList should return 2");
     }
 
     @ParameterizedTest
     @MethodSource("getParticipantByIdProvider")
-    void getParticipantById(Participant participant) {
-        when(participantRepository.findById(1L)).thenReturn(Optional.ofNullable(participant));
+    void getParticipantById(Optional<Participant> participant) {
+        when(participantRepository.findById(anyLong())).thenReturn(participant);
 
-        Participant actual = participantService.getParticipantById(1L);
+        Optional<Participant> actual = participantService.getParticipantById(1L);
 
         Assertions.assertEquals(participant, actual);
     }
@@ -107,21 +111,19 @@ class ParticipantServiceImplTest {
     @ParameterizedTest
     @MethodSource("searchFlexibleProvider")
     void searchFlexible(String searchString, List<Participant> participants) {
-        when(participantRepository.searchByAllFields(searchString)).thenReturn(participants);
+        Pageable pageable = PageRequest.of(0, 5);
+        when(participantRepository.searchByAllFields(searchString, pageable)).thenReturn(participants);
 
-        List<Participant> actual = participantService.searchFlexible(searchString);
+        List<Participant> actual = participantService.searchFlexible(searchString, 1, 5);
 
         Assertions.assertEquals(participants, actual);
     }
 
     @Test
     void deleteParticipantById() {
-        Participant expected = new Participant(1L, "Sferiff", "football", "Moldova", 342);
-        Participant actual = participantService.deleteParticipantById(1L);
+        participantService.deleteParticipantById(anyLong());
+        verify(participantRepository).deleteById(anyLong());
 
-        when(participantRepository.findById(1L)).thenReturn(Optional.of(expected));
-
-        Assertions.assertNull(actual);
     }
 
 

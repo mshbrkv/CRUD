@@ -47,12 +47,12 @@
         </tbody>
     </table>
 
+    <ul>
+        <li th:each="i : ${#numbers.sequence(1,allParticipants.size)}">
+            <a th:href="@{participants?page={pageNumb}(pageNumb=${i})}" th:text="${i}"></a>
+        </li>
+    </ul>
 
-<!--    <footer>-->
-<!--        <span th:each="i: ${#numbers.sequence(1, totalPages)}">-->
-<!--            <a th:href="@{participants/page/${i}}">[[${i}]]</a>-->
-<!--        </span>-->
-<!--    </footer>-->
 </div>
 </body>
 </html>
