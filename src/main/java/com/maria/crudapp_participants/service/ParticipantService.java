@@ -1,5 +1,6 @@
 package com.maria.crudapp_participants.service;
 
+import com.maria.crudapp_participants.dto.PaginatedParticipantDTO;
 import com.maria.crudapp_participants.entity.Participant;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,11 +13,11 @@ import java.util.UUID;
 public interface ParticipantService {
     Participant saveParticipant(Participant participant);
 
-    List<Participant> fetchParticipantList(int page, int perPage);
+    PaginatedParticipantDTO fetchParticipantList(int page, int perPage);
 
     Participant updateParticipant(Participant participant,  UUID participantId);
 
-    List<Participant> searchFlexible(String searchString,int page, int perPage);
+    Optional<PaginatedParticipantDTO> searchFlexible(String searchString,int page, int perPage);
 
     void deleteParticipantById(UUID participantId);
 

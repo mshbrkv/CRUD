@@ -19,24 +19,27 @@ public class ParticipantController {
     private static final String REDIRECT_MAIN_PAGE = "redirect:/participants";
 
     @GetMapping
-    public String fetchParticipantList(@RequestParam(required = false) String query, @RequestParam(defaultValue = "1") Integer page, Model model) {
-        int ITEMS_PER_PAGE = 10;
+    public String fetchParticipantList(@RequestParam(required = false) String query,
+                                       @RequestParam(defaultValue = "1") Integer page, Model model) {
+        int ITEMS_PER_PAGE = 3;
         if (query == null) {
-            List<Participant> allParticipants = participantService.fetchParticipantList(page, ITEMS_PER_PAGE);
-            model.addAttribute("allParticipants", allParticipants);
+            var allParticipants = participantService.fetchParticipantList(page, ITEMS_PER_PAGE);
+            model.addAttribute("allParticipants", allParticipants.getParticipants());
+            model.addAttribute("availablePages", allParticipants.getAvailablePages());
             return "main_page";
         } else {
-            List<Participant> allParticipants = participantService.searchFlexible(query, page, ITEMS_PER_PAGE);
-            if (allParticipants.size() > 0) {
-                model.addAttribute("allParticipants", allParticipants);
-                model.addAttribute("query", query);
-                return "main_page";
-            } else {
-                return "not_found";
-            }
-
+            return
+                    participantService.searchFlexible(query, page, ITEMS_PER_PAGE)
+                            .map(paginatedParticipantDTO -> {
+                                model.addAttribute("allParticipants", paginatedParticipantDTO.getParticipants());
+                                model.addAttribute("query", query);
+                                model.addAttribute("availablePages", paginatedParticipantDTO.getAvailablePages());
+                                return "main_page";
+                            })
+                            .orElse("not_found");
         }
     }
+
 
     @GetMapping("/new")
     public String newParticipantPage(Model model) {

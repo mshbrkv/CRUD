@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -13,15 +14,19 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "participants")
-public class Participant {
+public class Participant{
     @Id
     @GeneratedValue
     @Type(type = "uuid-char")
     @Column(name = "id", nullable = false)
     private UUID id = UUID.randomUUID();
+    @Column(name = "name")
     private String name;
+    @Column(name = "sport")
     private String sport;
+    @Column(name = "country")
     private String country;
+    @Column(name = "external_id")
     private int externalId;
 
 }
