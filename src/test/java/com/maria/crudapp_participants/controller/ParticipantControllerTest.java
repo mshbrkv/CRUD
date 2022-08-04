@@ -34,11 +34,11 @@ class ParticipantControllerTest {
         Participant participant2 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
         List<Participant> participantList = Arrays.asList(participant1, participant2);
         Page<Participant> participantPage = new PageImpl<>(participantList);
-        when(participantService.fetchParticipantList(1, 5))
-                .thenReturn((PaginatedParticipantDTO.builder()
-                                .participants(participantPage.toList())
-                                .availablePages(participantPage.getTotalPages())
-                                .build()));
+        when(participantService.fetchParticipantList(1, 3))
+                .thenReturn(PaginatedParticipantDTO.builder()
+                        .participants(participantPage.toList())
+                        .availablePages(participantPage.getTotalPages())
+                        .build());
 
         Model model = new ExtendedModelMap();
         String res = controller.fetchParticipantList(null, 1, model);
@@ -46,7 +46,8 @@ class ParticipantControllerTest {
         List<Participant> expectedAllParticipantsList = (List<Participant>) expectedAllParticipants;
 
         Assertions.assertNotNull(expectedAllParticipantsList);
-        Assertions.assertEquals(5, expectedAllParticipantsList.size());
+        Assertions.assertEquals(2
+                , expectedAllParticipantsList.size());
         Assertions.assertEquals(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), participantList.get(0).getId());
         Assertions.assertEquals("main_page", res);
     }
@@ -57,7 +58,7 @@ class ParticipantControllerTest {
         Participant participant2 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
         List<Participant> participantList = Arrays.asList(participant1, participant2);
         Page<Participant> participantPage = new PageImpl<>(participantList);
-        when(participantService.searchFlexible("Sheriff", 1, 5))
+        when(participantService.searchFlexible("Sheriff", 1, 3))
                 .thenReturn(Optional.of(PaginatedParticipantDTO.builder()
                         .participants(participantPage.toList())
                         .availablePages(participantPage.getTotalPages())
