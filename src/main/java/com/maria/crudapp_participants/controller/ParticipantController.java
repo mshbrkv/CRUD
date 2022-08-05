@@ -19,7 +19,7 @@ public class ParticipantController {
 
     @GetMapping
     public String fetchParticipantList(@RequestParam(required = false) String query,
-                                       @RequestParam(defaultValue = "1") Integer page, Model model) {
+                                       @RequestParam(defaultValue = "1", required = false) Integer page, Model model) {
         int ITEMS_PER_PAGE = 3;
         if (query == null) {
             var allParticipants = participantService.fetchParticipantList(page, ITEMS_PER_PAGE);
@@ -38,7 +38,6 @@ public class ParticipantController {
                             .orElse("not_found");
         }
     }
-
 
     @GetMapping("/new")
     public String newParticipantPage(Model model) {

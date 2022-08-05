@@ -12,10 +12,11 @@
     <table>
         <caption>Participants</caption>
         <form th:action="@{participants}" method="get">
-            <input type="text" th:name="query">
+            <label>
+                <input type="text" th:name="query">
+            </label>
             <button type="submit">Search</button>
         </form>
-
         <br><br>
         <a th:href="@{participants/new}">Add new participant</a> <br>
         <thead>
@@ -58,9 +59,15 @@
     <ul>
         <div th:if="${query!=null}">
             <li th:each="i : ${#numbers.sequence(1,availablePages)}">
-                <a th:href="@{participants/query=${query}?page={pageNumb}(pageNumb=${i})}"
-                   th:text="${i}"></a>
+                <a th:href="@{${'/participants'}(query = ${query}, page=${i})}"
+                   th:text="${i}">
+
+                </a>
             </li>
+            <br><br>
+            <a href="/participants">
+                <button>Return to all Participants` list</button>
+            </a>
         </div>
     </ul>
 </div>
