@@ -1,20 +1,14 @@
 package com.maria.crudapp_participants.service;
-
-import com.maria.crudapp_participants.dto.PaginatedParticipantDTO;
 import com.maria.crudapp_participants.entity.Participant;
 import com.maria.crudapp_participants.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.Part;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,31 +25,17 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     @Transactional(readOnly = true)
-    public PaginatedParticipantDTO fetchParticipantList(int page, int perPage) {
-        Pageable pageable = PageRequest.of(page - 1, perPage);
+    public Page<Participant> getAllParticipantList(int page, int perPage) {
+        Pageable pageable = PageRequest.of(page , perPage);
 
-        Page<Participant> participants = participantRepository.findAll(pageable);
-
-        return PaginatedParticipantDTO.builder()
-                .participants(participants.toList())
-                .availablePages(participants.getTotalPages())
-                .build();
+        return participantRepository.findAll(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<PaginatedParticipantDTO> searchFlexible(String searchString, int page, int perPage) {
-        Pageable pageable = PageRequest.of(page - 1, perPage);
-        Page<Participant> participants = participantRepository.searchByAllFields(searchString, pageable);
-        if (participants.getNumberOfElements() != 0) {
-            return Optional.of(PaginatedParticipantDTO.builder()
-                    .participants(participants.toList())
-                    .availablePages(participants.getTotalPages())
-                    .build());
-        } else {
-            return Optional.empty();
-        }
-
+    public Page<Participant> searchFlexible(String searchString, int page, int perPage) {
+        Pageable pageable = PageRequest.of(page, perPage);
+        return participantRepository.searchByAllFields(searchString, pageable);
     }
 
     @Override
@@ -82,12 +62,20 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     }
 
-
     @Override
     @Transactional
     public void deleteParticipantById(UUID participantId) {
         participantRepository.deleteById(participantId);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Participant> fetchParticipantsList(String searchString, int page, int perPage) {
+        if (searchString == null) {
+            return this.getAllParticipantList(page, perPage);
 
+        } else {
+            return this.searchFlexible(searchString, page, perPage);
+        }
+    }
 }
