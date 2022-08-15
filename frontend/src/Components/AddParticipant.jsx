@@ -6,16 +6,13 @@ const AddParticipant = () => {
     const [name, setName] = useState('');
     const [sport, setSport] = useState('');
     const [country, setCountry] = useState('');
-    const [externalId, setExternalId] = useState(4);
-
+    const [externalId, setExternalId] = useState();
     const navigate = useNavigate();
     const {id} = useParams();
-
 
     const saveParticipant = (e) => {
         e.preventDefault();
         const participant = {id, name, sport, country, externalId};
-
         if (id) {
             apiServices.updateParticipants(participant, id)
                 .then(response => {
@@ -60,21 +57,21 @@ const AddParticipant = () => {
             <form>
                 <div>
                     <label>Name
-                    <input type="text" id="name" value={name}
-                           onChange={(e) => setName(e.target.value)}
-                           placeholder="Enter name"/></label>
+                        <input type="text" id="name" value={name}
+                               onChange={(e) => setName(e.target.value)}
+                               placeholder="Enter name"/></label>
                 </div>
                 <div>
                     <label>Sport
-                    <input type="text" id="sport" value={sport}
-                           onChange={(e) => setSport(e.target.value)}
-                           placeholder="Enter sport"/></label>
+                        <input type="text" id="sport" value={sport}
+                               onChange={(e) => setSport(e.target.value)}
+                               placeholder="Enter sport"/></label>
                 </div>
                 <div>
                     <label>Country
-                    <input type="text" id="country" value={country}
-                           onChange={(e) => setCountry(e.target.value)}
-                           placeholder="Enter country"/></label>
+                        <input type="text" id="country" value={country}
+                               onChange={(e) => setCountry(e.target.value)}
+                               placeholder="Enter country"/></label>
                 </div>
                 <div><label>External ID
                     <input type="text" id="externalId" value={externalId}
@@ -89,7 +86,6 @@ const AddParticipant = () => {
             <Link to="/participants">Back to all participants</Link>
         </div>
     )
-
 }
 
 export default AddParticipant;

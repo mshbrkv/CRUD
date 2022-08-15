@@ -6,33 +6,49 @@ const ParticipantsList = () => {
     const [participants, setParticipants] = useState([]);
     const [availablePages, setAvailablePages] = useState();
     const [query, setQuery] = useState("");
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage] = useState(0);
     const navigate = useNavigate();
     let allPages = [];
     const [searchParams] = useSearchParams()
-    const page = searchParams.get('page')
+    const page = searchParams.get('page');
+    let queryURL = searchParams.get('query');
 
-    const init = (page) => {
-        apiServices.getAllParticipants(page - 1)
-            .then(response => {
-                setParticipants(response.data.content);
-                setAvailablePages(response.data.totalPages);
+    const init = (page, query) => {
+        if (queryURL === null) {
+            apiServices.getAllParticipants(page - 1)
+                .then(response => {
+                    setParticipants(response.data.content);
+                    setAvailablePages(response.data.totalPages);
+                })
+        } else {
+            apiServices.getAllParticipantsBySearch(query, page - 1).then(r => {
+                setParticipants(r.data.content);
+                setAvailablePages(r.data.totalPages);
+                setQuery(queryURL);
+                if (r.data.content.length === 0) {
+                    navigate(`/participants/*`, {replace: true})
+                } else {
+                    if (query === "") {
+                        navigate(`/participants`, {replace: true})
+                    } else {
+                        navigate(`/participants?query=${query}&page=${page}`, {replace: true})
+                    }
+                }
             })
+        }
     }
 
     allPages = Array.from({length: availablePages}, (x = 1, i) => i + x)
 
     useEffect(() => {
-        page ? init(page) : init(1);
-
+        page ? init(page, queryURL) : init(1, queryURL);
     }, []);
 
     const deleteParticipant = (id) => {
-
         apiServices.deleteParticipants(id)
             .then(() => {
-                    navigate(`/participants?page=1`, {replace: true})
-                    init(1);
+                navigate(`/participants`, {replace: true})
+                init(1, queryURL);
             })
     }
 
@@ -51,7 +67,11 @@ const ParticipantsList = () => {
 
     return (
         <div>
-            <h2>Participants1 list</h2>
+            <button onClick={() => {
+                queryURL = "";
+                init(1, "");
+                navigate(`/participants`, {replace: true})
+            }}><h2>Participants1 list</h2></button>
             <hr/>
             <div>
                 <Link to="/participants/add">Add Participant</Link>
@@ -87,7 +107,6 @@ const ParticipantsList = () => {
                                     <button onClick={(e) => {
                                         e.preventDefault();
                                         deleteParticipant(participant.id);
-                                        setQuery('');
                                     }}>
                                         Delete
                                     </button>
@@ -104,10 +123,10 @@ const ParticipantsList = () => {
                                 <input key={page} type="button" value={page} onClick={(e) => {
                                     e.preventDefault();
                                     if (query !== "") {
-                                        apiServices.getAllParticipantsBySearch(query, page - 1).then(response => {
-                                            setParticipants(response.data.content)
+                                        apiServices.getAllParticipantsBySearch(queryURL, page - 1).then(response => {
+                                            setParticipants(response.data.content);
                                         })
-                                        navigate(`/participants?query=${query}&page=${page}`, {replace: true})
+                                        navigate(`/participants?query=${queryURL}&page=${page}`, {replace: true});
                                     } else {
                                         apiServices.getAllParticipants(page - 1).then(response => {
                                             setParticipants(response.data.content)
@@ -117,8 +136,8 @@ const ParticipantsList = () => {
                                 }}/>
                             ))
                         }
-                    </form>
 
+                    </form>
                 </div>
             </div>
         </div>
