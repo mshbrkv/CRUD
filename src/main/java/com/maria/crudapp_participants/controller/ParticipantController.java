@@ -1,13 +1,13 @@
 package com.maria.crudapp_participants.controller;
 
-import com.maria.crudapp_participants.dto.PaginatedParticipantDTO;
-import com.maria.crudapp_participants.entity.Participant;
-import com.maria.crudapp_participants.service.ParticipantService;
+import com.maria.crudapp_participants.dto.ParticipantDTO;
+import com.maria.crudapp_participants.facade.ParticipantFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -16,34 +16,31 @@ import java.util.UUID;
 @CrossOrigin(origins = "*")
 @RequestMapping("/participants")
 public class ParticipantController {
-    private final ParticipantService participantService;
+    private final ParticipantFacade participantFacade;
 
     @GetMapping
-    public Page<Participant> getParticipantList(@RequestParam(required = false) String query,
-                                                @RequestParam(defaultValue = "1", required = false) Integer page) {
-        int ITEMS_PER_PAGE = 3;
-        return participantService.fetchParticipantsList(query, page, ITEMS_PER_PAGE);
+    public Page<ParticipantDTO> getParticipantList(@RequestParam(required = false) String query,
+                                                   Pageable pageable) {
+        return participantFacade.fetchParticipantsList(query, pageable);
     }
 
-
     @GetMapping("{id}")
-    public Optional<Participant> getParticipant(@PathVariable UUID id){
-        return participantService.getParticipantById(id);
+    public ParticipantDTO getParticipantById(@PathVariable("id") UUID participantId) {
+        return participantFacade.findParticipantById(participantId);
     }
 
     @PostMapping
-    public Participant createParticipant(@RequestBody Participant participant) {
-        return participantService.saveParticipant(participant);
-
+    public ParticipantDTO createParticipant(@RequestBody ParticipantDTO participant) {
+        return participantFacade.saveParticipant(participant);
     }
 
     @PutMapping("{id}")
-    public Participant updateParticipant(@RequestBody Participant newParticipant, @PathVariable UUID id) {
-        return participantService.updateParticipant(newParticipant, id);
+    public ParticipantDTO updateParticipant(@RequestBody ParticipantDTO newParticipant, @PathVariable UUID id) {
+        return participantFacade.updateParticipant(newParticipant, id);
     }
 
     @DeleteMapping("{id}")
     public void deleteParticipantById(@PathVariable("id") UUID id) {
-        participantService.deleteParticipantById(id);
+        participantFacade.deleteParticipantById(id);
     }
 }
