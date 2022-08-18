@@ -1,7 +1,6 @@
 package com.maria.crudapp_participants.facade;
 
 import com.maria.crudapp_participants.dto.ParticipantDTO;
-import com.maria.crudapp_participants.entity.Participant;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

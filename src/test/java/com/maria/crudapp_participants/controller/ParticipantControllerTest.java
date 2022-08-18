@@ -19,7 +19,6 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
-
 @ExtendWith(MockitoExtension.class)
 class ParticipantControllerTest {
 
@@ -52,7 +51,6 @@ class ParticipantControllerTest {
         Assertions.assertEquals(2, res.getTotalElements());
     }
 
-
     @Test
     void createParticipant() {
         ParticipantDTO participant = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
@@ -74,4 +72,5 @@ class ParticipantControllerTest {
         participantController.deleteParticipantById(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"));
         verify(participantFacade).deleteParticipantById(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"));
     }
+
 }

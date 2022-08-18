@@ -64,7 +64,6 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Override
     @Transactional(readOnly = true)
     public Page<Participant> fetchParticipantsList(String searchString, Pageable pageable) {
-
         return Optional.ofNullable(searchString)
                 .map(s -> self.searchFlexible(searchString, pageable))
                 .orElseGet(() -> self.getAllParticipantList(pageable));

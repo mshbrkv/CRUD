@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.Part;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,22 +29,18 @@ public class ParticipantFacadeImpl implements ParticipantFacade {
         return participantToParticipantDTOConverter.convert(participant1);
     }
 
-
-
     @Override
     public Page<ParticipantDTO> fetchParticipantsList(String searchString, Pageable pageable) {
-       Page <Participant> allParticipants=participantService.fetchParticipantsList(searchString, pageable);
-       List<ParticipantDTO> participantDTOS=allParticipants.getContent().stream().map(participantToParticipantDTOConverter::convert).toList();
-       return new PageImpl<>(participantDTOS, allParticipants.getPageable(),allParticipants.getTotalElements());
+        Page<Participant> allParticipants = participantService.fetchParticipantsList(searchString, pageable);
+        List<ParticipantDTO> participantDTOS = allParticipants.getContent().stream().map(participantToParticipantDTOConverter::convert).toList();
+        return new PageImpl<>(participantDTOS, allParticipants.getPageable(), allParticipants.getTotalElements());
     }
-
 
     @Override
     public ParticipantDTO updateParticipant(ParticipantDTO newParticipant, UUID participantId) {
-        Participant convert=participantDTOToParticipantConverter.convert(newParticipant);
-        Participant participant=participantService.updateParticipant(convert, newParticipant.getId());
+        Participant convert = participantDTOToParticipantConverter.convert(newParticipant);
+        Participant participant = participantService.updateParticipant(convert, newParticipant.getId());
         return participantToParticipantDTOConverter.convert(participant);
-
     }
 
     @Override
@@ -55,9 +50,8 @@ public class ParticipantFacadeImpl implements ParticipantFacade {
 
     @Override
     public ParticipantDTO findParticipantById(UUID participantId) {
-        Participant participant=participantService.findParticipantById(participantId);
-       return participantToParticipantDTOConverter.convert(participant);
-
+        Participant participant = participantService.findParticipantById(participantId);
+        return participantToParticipantDTOConverter.convert(participant);
     }
 
 }
