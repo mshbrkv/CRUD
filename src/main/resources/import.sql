@@ -1,4 +1,4 @@
-INSERT INTO participants (id, country, external_id, name, sport) VALUES ('9d9239ac-1257-11ed-861d-0242ac120002', 'Moldova', 123, 'Sheriff', 'football');
+INSERT INTO participants (id, country, external_id, name, sport) VALUES ('9d9239ac-1257-11ed-861d-0242ac120002', 'Moldova', 123, 'Arsenal', 'football');
 INSERT INTO participants (id, country, external_id, name, sport) VALUES ('daa0de6a-1258-11ed-861d-0242ac120002', 'Romania', 231, 'Craiova', 'football');
 INSERT INTO participants (id, country, external_id, name, sport) VALUES ('5af40425-8b62-4fa3-94be-4babccfe97ea', 'Russia', 980, 'Spartak', 'dance');
 INSERT INTO participants (id, country, external_id, name, sport) VALUES ('e6316141-4540-401d-9385-02afd6c133da', 'Moldova', 123, 'Spartak', 'dance');

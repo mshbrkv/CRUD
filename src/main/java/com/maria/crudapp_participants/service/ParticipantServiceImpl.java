@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     private final ParticipantServiceImpl self;
 
     @Override
+    @Transactional
     public Participant saveParticipant(Participant participant) {
         return participantRepository.save(participant);
     }
@@ -35,7 +37,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Override
     @Transactional(readOnly = true)
     public Page<Participant> searchFlexible(final String searchString, final Pageable pageable) {
-        return participantRepository.searchByAllFields(searchString, pageable);
+        return participantRepository.searchByAllFields(searchString, PageRequest.of(1, 20));
     }
 
     @Override

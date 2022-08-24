@@ -10,8 +10,31 @@ import org.springframework.data.repository.query.Param;
 import java.util.UUID;
 
 public interface ParticipantRepository extends JpaRepository<Participant, UUID> {
-    @Query(value = "SELECT * from participants p where upper(p.name) like upper(concat('%', :searchString, '%')) or upper(p.sport) like upper(concat('%', :searchString, '%')) or upper(p.country) like upper(concat('%', :searchString, '%')) or upper(p.external_Id) like upper(concat('%', :searchString, '%'))",
-            countQuery = "SELECT count(*) FROM participants p where upper(p.name) like upper(concat('%', :searchString, '%')) or upper(p.sport) like upper(concat('%', :searchString, '%')) or upper(p.country) like upper(concat('%', :searchString, '%')) or upper(p.external_Id) like upper(concat('%', :searchString, '%'))",
-            nativeQuery = true)
+//    @Query(value = "SELECT * from participants p where upper(p.name )  like upper('%${searchString}%') or upper(p.sport) like upper('%${searchString}%') or upper(p.country) like upper('%${searchString}%') or upper(p.external_Id) like upper('%${searchString}%')",
+//            countQuery = "SELECT count(*) FROM participants p where upper(p.name) like upper('%${searchString}%') or upper(p.sport) like upper('%${searchString}%') or upper(p.country) like upper('%${searchString}%') or upper(p.external_Id) like upper('%${searchString}%')",
+//            nativeQuery = true)
+
+//    @Query(value = "SELECT * from participants p where upper(p.name) like upper(concat('%', :searchString, '%')) or upper(p.sport) like upper(concat('%', :searchString, '%')) or upper(p.country) like upper(concat('%', :searchString, '%')) or upper(p.external_Id) like upper(concat('%', :searchString, '%'))",
+//            countQuery = "SELECT count(*) FROM participants p where upper(p.name) like upper(concat('%', :searchString, '%')) or upper(p.sport) like upper(concat('%', :searchString, '%')) or upper(p.country) like upper(concat('%', :searchString, '%')) or upper(p.external_Id) like upper(concat('%', :searchString, '%'))",
+//            nativeQuery = true)
+
+//    @Query("""
+//            select p from Participant p
+//            where upper(p.name) like upper(concat('%', :searchString, '%'))
+//            or upper(p.sport) like upper(concat('%', :searchString, '%'))
+//            or upper(p.country) like upper(concat('%', :searchString, '%'))
+//            or upper(p.externalId) like upper(concat('%', :searchString, '%'))""")
+//
+//
+////    @Query("select p from participants p where upper(p.name) like upper(concat('%', :searchStrong, '%') ) or upper(p.sport) like upper(concat('%', :searchString, '%')) or upper(p.country) like upper(concat('%', :searchString, '%')) or upper(p.external_Id) like upper(concat('%', :searchString, '%'))")
+//@Query("select p from Participant p where upper(p.name) = upper(:searchString)")
+//@Query("select p from Participant p where upper(p.name) like upper(:searchString)")
+//@Query("select p from Participant p where upper(p.name) like upper(concat('%', :searchString, '%'))")
+    //Page<Participant> findByNameContainingIgnoreCaseOrSportContainingIgnoreCaseOrCountryContainingIgnoreCaseOrExternalIdContainingIgnoreCase(@Param("searchString") String searchString, Pageable pageable);
+
+
+    @Query("""
+        select p from Participant p
+        where upper(p.name) like upper(concat('%', :searchString, '%')) or upper(p.sport) like upper(concat('%', :searchString, '%')) or upper(p.country) like upper(concat('%', :searchString, '%')) or upper(p.externalId) like upper(concat('%', :searchString, '%'))""")
     Page<Participant> searchByAllFields(@Param("searchString") String searchString, Pageable pageable);
 }
