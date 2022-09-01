@@ -25,51 +25,37 @@ public class MarketServiceImpl implements MarketService {
         return marketRepository.findAll(pageable);
     }
 
-//    @Override
-//    @Transactional
-//    public Market saveMarket(/Market market) {
-//        return marketRepository.save(Market);
-//    }
+    @Override
+    @Transactional
+    public Market saveMarket(Market market) {
+        return marketRepository.save(market);
+    }
 
+    @Override
+    @Transactional
+    public Market updateMarket(Market newMarket, UUID marketId) {
+        Optional<Market> optionalMarket = marketRepository.findById(marketId);
+        if (optionalMarket.isPresent()) {
+            Market editMarket = optionalMarket.get();
+            editMarket.setId(newMarket.getId());
+            editMarket.setName(newMarket.getName());
+            editMarket.setMarketTemplateName(newMarket.getMarketTemplateName());
+            editMarket.setEvent(newMarket.getEvent());
+            editMarket.setSelections(newMarket.getSelections());
+            return marketRepository.save(editMarket);
+        } else {
+            return newMarket;
+        }
+    }
 
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Market findMarketById(UUID marketId) {
-//        Optional<Market> marketOptional = marketRepository.findById(marketId);
-//        Market market = null;
-//        if (marketOptional.isPresent()) {
-//            market = marketOptional.get();
-//        }
-//        return market;
-//    }
-
-//    @Override
-//    @Transactional
-//    public Market updateMarket(Market newMarket, UUID marketId) {
-//        Optional<Market> market = marketRepository.findById(marketId);
-//        if (market.isPresent()) {
-//            Market editMarket = market.get();
-//            editMarket.setId(newMarket.getId());
-//            editMarket.setName(newMarket.getName());
-//            editMarket.setMarketTemplateName(newMarket.getMarketTemplateName());
-//            editMarket.setEventId(newMarket.getEventId());
-//            editMarket.setSelections(newMarket.getSelections());
-//            return marketRepository.save(editMarket);
-//        } else {
-//            return newMarket;
-//        }
-//    }
-
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Page<Market> searchFlexible(String searchString, Pageable pageable) {
-//        return null;
-//    }
-//
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Page<Market> fetchMarketsList(String searchString, Pageable pageable) {
-//        return null;
-//    }
-
+    @Override
+    @Transactional
+    public Market findMarketById(UUID marketId) {
+        Optional<Market> marketOptional=marketRepository.findById(marketId);
+        Market market=null;
+        if (marketOptional.isPresent()){
+            market=marketOptional.get();
+        }
+        return market;
+    }
 }

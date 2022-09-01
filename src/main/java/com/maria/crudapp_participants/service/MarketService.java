@@ -10,13 +10,9 @@ public interface MarketService {
 
     Page<Market> getAllMarketList(Pageable pageable);
 
-//    Market saveMarket(Market Market);
+    Market saveMarket(Market Market);
 
-//    Market updateMarket(Market newMarket, UUID MarketId);
+    Market updateMarket(Market newMarket, UUID MarketId);
 
-//    Page<Market> searchFlexible(String searchString, Pageable pageable);
-//
-//    Page<Market> fetchMarketsList(String searchString, Pageable pageable);
-
-//    Market findMarketById(final UUID MarketId);
+    Market findMarketById(final UUID MarketId);
 }

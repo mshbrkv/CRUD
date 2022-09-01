@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Component
@@ -22,10 +23,24 @@ public class MarketFacadeImpl implements MarketFacade {
     private final Converter<MarketDTO, Market> marketDTOToMarketConverter;
 
     @Override
-    public Page<MarketDTO> getEventList(Pageable pageable) {
+    public Page<MarketDTO> getMarketList(Pageable pageable) {
         Page<Market> allMarket = marketService.getAllMarketList(pageable);
         List<MarketDTO> eventDTO = allMarket.getContent().stream().map(marketToMarketDTOConverter::convert).toList();
         return new PageImpl<>(eventDTO, allMarket.getPageable(), allMarket.getTotalElements());
 
+    }
+
+    @Override
+    public MarketDTO saveMarket(MarketDTO newMarket) {
+        Market marketConvert = marketDTOToMarketConverter.convert(newMarket);
+        Market market=marketService.saveMarket(marketConvert);
+        return marketToMarketDTOConverter.convert(market);
+    }
+
+    @Override
+    public MarketDTO updateMarket(MarketDTO newMarket, UUID marketId) {
+        Market marketConvert = marketDTOToMarketConverter.convert(newMarket);
+        Market market=marketService.updateMarket(marketConvert, newMarket.getId());
+        return marketToMarketDTOConverter.convert(market);
     }
 }
