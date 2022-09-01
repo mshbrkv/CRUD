@@ -37,7 +37,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Override
     @Transactional(readOnly = true)
     public Page<Participant> searchFlexible(final String searchString, final Pageable pageable) {
-        return participantRepository.searchByAllFields(searchString, PageRequest.of(1, 20));
+        return participantRepository.searchFlexible(searchString, searchString, searchString, pageable);
     }
 
     @Override
@@ -66,9 +66,10 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Override
     @Transactional(readOnly = true)
     public Page<Participant> fetchParticipantsList(String searchString, Pageable pageable) {
-        return Optional.ofNullable(searchString)
+        Page<Participant> participants = Optional.ofNullable(searchString)
                 .map(s -> self.searchFlexible(searchString, pageable))
                 .orElseGet(() -> self.getAllParticipantList(pageable));
+        return participants;
     }
 
     @Override

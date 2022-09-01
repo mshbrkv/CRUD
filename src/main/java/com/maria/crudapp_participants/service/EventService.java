@@ -7,15 +7,19 @@ import org.springframework.data.domain.Pageable;
 import java.util.UUID;
 
 public interface EventService {
-    Event saveEvent(Event Event);
 
     Page<Event> getAllEventList(Pageable pageable);
+
+    void deleteEventById(UUID EventId);
+
+    Page<Event> getEventInPlay(Pageable pageable);
+
+
+    Event saveEvent(Event Event);
 
     Event updateEvent(Event newEvent, UUID EventId);
 
 //    Page<Event> searchFlexible(String searchString, Pageable pageable);
-
-    void deleteEventById(UUID EventId);
 
 //    Page<Event> fetchEventsList(String searchString, Pageable pageable);
 

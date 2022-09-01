@@ -20,16 +20,40 @@ public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
 
-    @Override
-    @Transactional
-    public Event saveEvent(Event event) {
-        return eventRepository.save(event);
-    }
 
     @Override
     @Transactional(readOnly = true)
     public Page<Event> getAllEventList(Pageable pageable) {
         return eventRepository.findAll(pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Event findEventById(UUID eventId) {
+        Optional<Event> eventOptional = eventRepository.findById(eventId);
+        Event event = null;
+        if (eventOptional.isPresent()) {
+            event = eventOptional.get();
+        }
+        return event;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Event> getEventInPlay(Pageable pageable) {
+        return eventRepository.findByInPlayTrue(pageable);
+    }
+
+    @Override
+    @Transactional
+    public void deleteEventById(UUID eventId) {
+        eventRepository.deleteById(eventId);
+    }
+
+    @Override
+    @Transactional
+    public Event saveEvent(Event event) {
+        return eventRepository.save(event);
     }
 
     @Override
@@ -43,29 +67,12 @@ public class EventServiceImpl implements EventService {
             editEvent.setStartTime(newEvent.getStartTime());
             editEvent.setInPlay(newEvent.isInPlay());
             editEvent.setParticipants(newEvent.getParticipants());
-            editEvent.setMarketsId(newEvent.getMarketsId());
+            editEvent.setMarkets(newEvent.getMarkets());
             return eventRepository.save(editEvent);
         } else {
             return newEvent;
         }
     }
 
-    @Override
-    @Transactional
-    public void deleteEventById(UUID eventId) {
 
-        eventRepository.deleteById(eventId);
-
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Event findEventById(UUID eventId) {
-        Optional<Event> eventOptional = eventRepository.findById(eventId);
-        Event event = null;
-        if (eventOptional.isPresent()) {
-            event = eventOptional.get();
-        }
-        return event;
-    }
 }

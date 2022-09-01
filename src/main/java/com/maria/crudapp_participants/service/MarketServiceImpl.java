@@ -18,13 +18,6 @@ import java.util.UUID;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MarketServiceImpl implements MarketService {
     private final MarketRepository marketRepository;
-//    private final MarketServiceImpl self;
-
-    @Override
-    @Transactional
-    public Market saveMarket(Market Market) {
-        return marketRepository.save(Market);
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -32,33 +25,40 @@ public class MarketServiceImpl implements MarketService {
         return marketRepository.findAll(pageable);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Market findMarketById(UUID marketId) {
-        Optional<Market> marketOptional = marketRepository.findById(marketId);
-        Market market = null;
-        if (marketOptional.isPresent()) {
-            market = marketOptional.get();
-        }
-        return market;
-    }
+//    @Override
+//    @Transactional
+//    public Market saveMarket(/Market market) {
+//        return marketRepository.save(Market);
+//    }
 
-    @Override
-    @Transactional
-    public Market updateMarket(Market newMarket, UUID marketId) {
-        Optional<Market> market = marketRepository.findById(marketId);
-        if (market.isPresent()) {
-            Market editMarket = market.get();
-            editMarket.setId(newMarket.getId());
-            editMarket.setName(newMarket.getName());
-            editMarket.setMarketTemplateName(newMarket.getMarketTemplateName());
-            editMarket.setEventId(newMarket.getEventId());
-            editMarket.setSelections(newMarket.getSelections());
-            return marketRepository.save(editMarket);
-        } else {
-            return newMarket;
-        }
-    }
+
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Market findMarketById(UUID marketId) {
+//        Optional<Market> marketOptional = marketRepository.findById(marketId);
+//        Market market = null;
+//        if (marketOptional.isPresent()) {
+//            market = marketOptional.get();
+//        }
+//        return market;
+//    }
+
+//    @Override
+//    @Transactional
+//    public Market updateMarket(Market newMarket, UUID marketId) {
+//        Optional<Market> market = marketRepository.findById(marketId);
+//        if (market.isPresent()) {
+//            Market editMarket = market.get();
+//            editMarket.setId(newMarket.getId());
+//            editMarket.setName(newMarket.getName());
+//            editMarket.setMarketTemplateName(newMarket.getMarketTemplateName());
+//            editMarket.setEventId(newMarket.getEventId());
+//            editMarket.setSelections(newMarket.getSelections());
+//            return marketRepository.save(editMarket);
+//        } else {
+//            return newMarket;
+//        }
+//    }
 
 //    @Override
 //    @Transactional(readOnly = true)

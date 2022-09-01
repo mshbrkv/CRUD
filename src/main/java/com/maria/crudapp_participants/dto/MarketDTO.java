@@ -1,6 +1,6 @@
 package com.maria.crudapp_participants.dto;
 
-
+import com.maria.crudapp_participants.entity.Event;
 import com.maria.crudapp_participants.selections.Selection;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,10 +14,10 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MarketsDTO {
+public class MarketDTO {
     private UUID id;
     private String name;
     private String marketTemplateName;
-    private UUID eventId;
+    private Event event;
     private List<Selection> selections;
 }

@@ -34,7 +34,11 @@ public interface ParticipantRepository extends JpaRepository<Participant, UUID> 
 
 
     @Query("""
-        select p from Participant p
-        where upper(p.name) like upper(concat('%', :searchString, '%')) or upper(p.sport) like upper(concat('%', :searchString, '%')) or upper(p.country) like upper(concat('%', :searchString, '%')) or upper(p.externalId) like upper(concat('%', :searchString, '%'))""")
-    Page<Participant> searchByAllFields(@Param("searchString") String searchString, Pageable pageable);
+            select p from Participant p
+            where upper(p.name) like upper(concat('%', ?1, '%')) or upper(p.sport) like upper(concat('%', ?2, '%')) or upper(p.country) like upper(concat('%', ?3, '%'))""")
+    Page<Participant> searchFlexible(String first, String second, String third, Pageable pageable);
+   // Page<Participant> searchByAllFields(@Param("searchString") String searchString, Pageable pageable);
+
+
+
 }
