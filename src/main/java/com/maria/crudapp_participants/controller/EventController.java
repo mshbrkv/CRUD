@@ -47,4 +47,14 @@ public class EventController {
     public void deleteById(@PathVariable("id") UUID eventId) {
         eventFacade.deleteEventById(eventId);
     }
+
+    @GetMapping("filter_by_market-name")
+    public Page<EventDTO> getEventsByMarketName(Pageable pageable, @RequestParam String marketName) {
+        return eventFacade.getEventsByMarketName(pageable, marketName);
+    }
+
+    @GetMapping("filter_by_participant-name")
+    public Page<EventDTO> getEventsByParticipantName(Pageable pageable, @RequestParam String participantName) {
+        return eventFacade.getEventsByParticipantsName(pageable, participantName);
+    }
 }

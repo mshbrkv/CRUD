@@ -45,6 +45,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public Page<Event> getEventsByMarketName(Pageable pageable, String marketName) {
+        return eventRepository.findByMarketsName(pageable, marketName);
+    }
+
+    @Override
+    public Page<Event> getEventsByParticipantsName(Pageable pageable, String participantName) {
+        return eventRepository.findByParticipantsName(pageable, participantName);
+    }
+
+    @Override
     @Transactional
     public void deleteEventById(UUID eventId) {
         eventRepository.deleteById(eventId);
@@ -73,6 +83,4 @@ public class EventServiceImpl implements EventService {
             return newEvent;
         }
     }
-
-
 }

@@ -14,14 +14,15 @@ public interface EventService {
 
     Page<Event> getEventInPlay(Pageable pageable);
 
+    Page<Event> getEventsByMarketName(Pageable pageable, String marketName);
+
+    Page<Event> getEventsByParticipantsName(Pageable pageable, String participantName);
 
     Event saveEvent(Event Event);
 
     Event updateEvent(Event newEvent, UUID EventId);
 
-//    Page<Event> searchFlexible(String searchString, Pageable pageable);
-
-//    Page<Event> fetchEventsList(String searchString, Pageable pageable);
-
     Event findEventById(final UUID EventId);
+
+
 }

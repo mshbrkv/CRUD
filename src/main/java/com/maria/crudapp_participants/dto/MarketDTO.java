@@ -1,5 +1,6 @@
 package com.maria.crudapp_participants.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.maria.crudapp_participants.entity.Event;
 import com.maria.crudapp_participants.selections.Selection;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ public class MarketDTO {
     private UUID id;
     private String name;
     private String marketTemplateName;
+    @JsonIgnore
     private Event event;
     private List<Selection> selections;
 }

@@ -42,12 +42,13 @@ public class Event {
     @Column(name = "in_play")
     private boolean inPlay;
 
+
     @Type(type = "json")
     @Column(name = "participants", columnDefinition = "jsonb")
     private List<Participant> participants;//json with two participants objects
 
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "event")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "event")
     @Type(type = "json")
     @Column(name = "market_id", columnDefinition = "jsonb")
     private List<Market> markets;

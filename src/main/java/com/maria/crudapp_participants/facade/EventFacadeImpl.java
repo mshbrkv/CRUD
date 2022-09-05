@@ -36,16 +36,16 @@ public class EventFacadeImpl implements EventFacade {
 
     @Override
     public Page<EventDTO> getEventInPlay(Pageable pageable) {
-       Page <Event> event=eventService.getEventInPlay(pageable);
-        List<EventDTO> eventDTO=event.getContent().stream().map(eventToEventDTOConverter::convert).toList();
+        Page<Event> event = eventService.getEventInPlay(pageable);
+        List<EventDTO> eventDTO = event.getContent().stream().map(eventToEventDTOConverter::convert).toList();
         return new PageImpl<>(eventDTO, event.getPageable(), event.getTotalElements());
     }
 
     @Override
     public EventDTO saveEvent(EventDTO event) {
-      Event convert=eventDTOToEventConverter.convert(event);
-      Event event1=eventService.saveEvent(convert);
-      return eventToEventDTOConverter.convert(event1);
+        Event convert = eventDTOToEventConverter.convert(event);
+        Event event1 = eventService.saveEvent(convert);
+        return eventToEventDTOConverter.convert(event1);
     }
 
     @Override
@@ -55,8 +55,22 @@ public class EventFacadeImpl implements EventFacade {
 
     @Override
     public EventDTO updateEvent(EventDTO newEvent, UUID eventId) {
-        Event convert=eventDTOToEventConverter.convert(newEvent);
-        Event event=eventService.updateEvent(convert, newEvent.getId());
+        Event convert = eventDTOToEventConverter.convert(newEvent);
+        Event event = eventService.updateEvent(convert, newEvent.getId());
         return eventToEventDTOConverter.convert(event);
+    }
+
+    @Override
+    public Page<EventDTO> getEventsByMarketName(Pageable pageable, String marketName) {
+        Page<Event> events = eventService.getEventsByMarketName(pageable, marketName);
+        List<EventDTO> eventDTO = events.getContent().stream().map(eventToEventDTOConverter::convert).toList();
+        return new PageImpl<>(eventDTO, events.getPageable(), events.getTotalElements());
+    }
+
+    @Override
+    public Page<EventDTO> getEventsByParticipantsName(Pageable pageable, String participantName) {
+        Page<Event> events = eventService.getEventsByParticipantsName(pageable, participantName);
+        List<EventDTO> eventDTO = events.getContent().stream().map(eventToEventDTOConverter::convert).toList();
+        return new PageImpl<>(eventDTO, events.getPageable(), events.getTotalElements());
     }
 }
