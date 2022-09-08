@@ -34,7 +34,8 @@ public class Market {
     @JsonIgnore
     private Event event;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "market")
     @Type(type = "json")
-    @Column(name = "selections", columnDefinition = "jsonb")
+    @Column(name = "selections_id", columnDefinition = "jsonb")
     private List<Selection> selections; //json with selections, every selection has name and price
 }

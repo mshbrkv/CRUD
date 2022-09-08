@@ -4,6 +4,7 @@ import com.maria.crudapp_participants.entity.Event;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public interface EventService {
@@ -24,5 +25,5 @@ public interface EventService {
 
     Event findEventById(final UUID EventId);
 
-
+    Page<Event> findEventsByPriceRange(BigDecimal priceFirst, BigDecimal priceSecond, Pageable pageable);
 }

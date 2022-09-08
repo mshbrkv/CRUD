@@ -1,15 +1,20 @@
 package com.maria.crudapp_participants.service;
 
 import com.maria.crudapp_participants.entity.Event;
+import com.maria.crudapp_participants.entity.Market;
 import com.maria.crudapp_participants.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,7 +24,6 @@ import java.util.UUID;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
-
 
     @Override
     @Transactional(readOnly = true)
@@ -51,7 +55,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Page<Event> getEventsByParticipantsName(Pageable pageable, String participantName) {
-        return eventRepository.findByParticipantsName(pageable, participantName);
+        return eventRepository.findByParticipantsName(pageable, "[{\"name\":\"".concat(participantName).concat("\"}]"));
     }
 
     @Override
@@ -83,4 +87,17 @@ public class EventServiceImpl implements EventService {
             return newEvent;
         }
     }
+
+    @Override
+    public Page<Event> findEventsByPriceRange(BigDecimal priceFirst, BigDecimal priceSecond, Pageable pageable) {
+        List<Event> events = eventRepository.findAll();
+        List<Event> collect = events.stream()
+                .filter(event -> event.getMarkets().stream().
+                        map(Market::getSelections).
+                        flatMap(Collection::stream).
+                        anyMatch(selection -> selection.getPrice().compareTo(priceFirst) >= 0 && selection.getPrice().compareTo(priceSecond) <= 0))
+                .toList();
+        return new PageImpl<>(collect, pageable, collect.size());
+    }
+
 }

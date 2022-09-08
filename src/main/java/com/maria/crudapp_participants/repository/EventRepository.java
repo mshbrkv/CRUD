@@ -12,8 +12,8 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
 
     Page<Event> findByInPlayTrue(Pageable pageable);
 
-    @Query("select e from Event e inner join e.markets markets where markets.name = ?1")
     Page<Event> findByMarketsName(Pageable pageable, String marketName);
 
+    @Query(value = "select * from events e where e.participants @> cast(:participantName as jsonb)", nativeQuery = true)
     Page<Event> findByParticipantsName(Pageable pageable, String participantName);
 }

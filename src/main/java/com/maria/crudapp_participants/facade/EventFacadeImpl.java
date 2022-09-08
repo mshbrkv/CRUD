@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,4 +74,12 @@ public class EventFacadeImpl implements EventFacade {
         List<EventDTO> eventDTO = events.getContent().stream().map(eventToEventDTOConverter::convert).toList();
         return new PageImpl<>(eventDTO, events.getPageable(), events.getTotalElements());
     }
+
+    @Override
+    public Page<EventDTO> findEventsByPriceRange(BigDecimal priceFirst, BigDecimal priceSecond, Pageable pageable) {
+        Page<Event> markets = eventService.findEventsByPriceRange(priceFirst, priceSecond, pageable);
+        List<EventDTO> marketsDTO = markets.getContent().stream().map(eventToEventDTOConverter::convert).toList();
+        return new PageImpl<>(marketsDTO, markets.getPageable(), markets.getTotalElements());
+    }
+
 }

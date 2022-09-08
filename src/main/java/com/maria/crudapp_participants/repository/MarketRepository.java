@@ -6,10 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.yaml.snakeyaml.error.Mark;
 
 import java.util.UUID;
 
 public interface MarketRepository extends JpaRepository<Market, UUID> {
+
+//    @Query("select m from Market m inner join m.selections selections where selections.price > ?1")
+//    Page<Market> findBySelectionsPriceAfter(int number);
 //
 //    @Query("""
 //        select m from Market m

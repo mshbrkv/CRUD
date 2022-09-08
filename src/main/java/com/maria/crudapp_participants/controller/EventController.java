@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @RestController
@@ -48,13 +49,19 @@ public class EventController {
         eventFacade.deleteEventById(eventId);
     }
 
-    @GetMapping("filter_by_market-name")
+    @GetMapping("search/by_market")
     public Page<EventDTO> getEventsByMarketName(Pageable pageable, @RequestParam String marketName) {
         return eventFacade.getEventsByMarketName(pageable, marketName);
     }
 
-    @GetMapping("filter_by_participant-name")
+    @GetMapping("search/by_participant")
     public Page<EventDTO> getEventsByParticipantName(Pageable pageable, @RequestParam String participantName) {
         return eventFacade.getEventsByParticipantsName(pageable, participantName);
     }
+
+    @GetMapping("search/by_price_range")
+    public Page<EventDTO> findEventsByPriceRange(Pageable pageable, @RequestParam BigDecimal from, @RequestParam BigDecimal to) {
+        return eventFacade.findEventsByPriceRange(from, to, pageable);
+    }
+
 }
