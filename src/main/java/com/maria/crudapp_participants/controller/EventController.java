@@ -1,14 +1,21 @@
 package com.maria.crudapp_participants.controller;
 
 import com.maria.crudapp_participants.dto.EventDTO;
+import com.maria.crudapp_participants.dto.ShortEvent;
+import com.maria.crudapp_participants.entity.Event;
+import com.maria.crudapp_participants.entity.Market;
 import com.maria.crudapp_participants.facade.EventFacade;
+import com.maria.crudapp_participants.selections.Selection;
+import com.maria.crudapp_participants.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,6 +24,7 @@ import java.util.UUID;
 public class EventController {
 
     private final EventFacade eventFacade;
+    private final EventService eventService;
 
     @GetMapping
     public Page<EventDTO> getEventList(Pageable pageable) {
@@ -62,6 +70,36 @@ public class EventController {
     @GetMapping("search/by_price_range")
     public Page<EventDTO> findEventsByPriceRange(Pageable pageable, @RequestParam BigDecimal from, @RequestParam BigDecimal to) {
         return eventFacade.findEventsByPriceRange(from, to, pageable);
+    }
+
+    @GetMapping("sorted_by_price")
+    public Page<EventDTO> getSortedEventsByPrice(Pageable pageable) {
+        return eventFacade.getSortedEventsByPrice(pageable);
+    }
+
+    @GetMapping("search/without")
+    public Page<EventDTO> getEventsWithNMarketsAndNotSport(Pageable pageable, @RequestParam String sport, @RequestParam Integer n) {
+        return eventFacade.getEventsWithNMarketsAndNotSport(pageable, sport, n);
+    }
+
+    @GetMapping("prices/{id}")
+    public List<BigDecimal> priceOfEvent(@PathVariable UUID id) {
+        return eventFacade.priceOfEvent(id);
+    }
+
+    @GetMapping("pricesMarkets")
+    public   List<Selection> getAveragePricesForPreMatchMarkets() {
+        return eventFacade.getAveragePricesForPreMatchMarkets();
+    }
+
+    @GetMapping("shortEvents")
+    public List<ShortEvent> getAllShortEvents(){
+        return eventService.allShortEvent();
+    }
+
+    @GetMapping("names")
+    public  List<Event> getDuplicate(){
+        return eventService.getEventsWithDuplicatedParticipantAndDifferentYears();
     }
 
 }

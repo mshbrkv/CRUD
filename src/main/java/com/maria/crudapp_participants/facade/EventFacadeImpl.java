@@ -2,6 +2,8 @@ package com.maria.crudapp_participants.facade;
 
 import com.maria.crudapp_participants.dto.EventDTO;
 import com.maria.crudapp_participants.entity.Event;
+import com.maria.crudapp_participants.entity.Market;
+import com.maria.crudapp_participants.selections.Selection;
 import com.maria.crudapp_participants.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -77,9 +80,32 @@ public class EventFacadeImpl implements EventFacade {
 
     @Override
     public Page<EventDTO> findEventsByPriceRange(BigDecimal priceFirst, BigDecimal priceSecond, Pageable pageable) {
-        Page<Event> markets = eventService.findEventsByPriceRange(priceFirst, priceSecond, pageable);
-        List<EventDTO> marketsDTO = markets.getContent().stream().map(eventToEventDTOConverter::convert).toList();
-        return new PageImpl<>(marketsDTO, markets.getPageable(), markets.getTotalElements());
+        Page<Event> events = eventService.findEventsByPriceRange(priceFirst, priceSecond, pageable);
+        List<EventDTO> eventsDTO = events.getContent().stream().map(eventToEventDTOConverter::convert).toList();
+        return new PageImpl<>(eventsDTO, events.getPageable(), events.getTotalElements());
     }
 
+    @Override
+    public Page<EventDTO> getSortedEventsByPrice(Pageable pageable) {
+        Page<Event> events = eventService.getSortedEventsByPrice(pageable);
+        List<EventDTO> eventsDTO = events.getContent().stream().map(eventToEventDTOConverter::convert).toList();
+        return new PageImpl<>(eventsDTO, events.getPageable(), events.getTotalElements());
+    }
+
+    @Override
+    public Page<EventDTO> getEventsWithNMarketsAndNotSport(Pageable pageable, String sport, Integer numMarkets) {
+        Page<Event> events = eventService.getEventsWithNMarketsAndNotSport(pageable, sport, numMarkets);
+        List<EventDTO> eventDTO = events.getContent().stream().map(eventToEventDTOConverter::convert).toList();
+        return new PageImpl<>(eventDTO, events.getPageable(), events.getTotalElements());
+    }
+
+    @Override
+    public List<BigDecimal> priceOfEvent(UUID eventId) {
+        return eventService.priceOfEvent(eventId);
+    }
+
+    @Override
+    public  List<Selection>  getAveragePricesForPreMatchMarkets() {
+        return eventService.getAveragePricesForPreMatchMarkets();
+    }
 }
