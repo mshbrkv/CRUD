@@ -52,5 +52,11 @@ public class Event {
     @Type(type = "json")
     @Column(name = "market_id", columnDefinition = "jsonb")
     private List<Market> markets;
+
+
+    public boolean isPrematch() {
+
+        return startTime.getTime() > new Date().getTime();
+    }
 }
 

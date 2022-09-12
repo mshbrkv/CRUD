@@ -55,6 +55,5 @@ class MarketControllerTest {
         when(marketFacade.updateMarket(marketDTO,marketDTO.getId())).thenReturn(marketDTO);
         MarketDTO actual=marketController.updateMarket(marketDTO, marketDTO.getId());
         assertThat(actual).isEqualTo(marketDTO);
-
     }
 }

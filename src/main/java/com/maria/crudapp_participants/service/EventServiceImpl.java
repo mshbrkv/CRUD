@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -24,8 +26,12 @@ import java.util.stream.Stream;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class EventServiceImpl implements EventService {
 
+    final Function<Event, List<BigDecimal>> priceExtractingFunction = e -> e.getMarkets()
+            .stream()
+            .flatMap(y -> y.getSelections().stream())
+            .map(Selection::getPrice)
+            .collect(Collectors.toList());
     private final EventRepository eventRepository;
-
     private final EventServiceImpl self;
 
     @Override
@@ -93,43 +99,62 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Page<Event> findEventsByPriceRange(BigDecimal priceFirst, BigDecimal priceSecond, Pageable pageable) {
-        List<Event> events = eventRepository.findAll();
-        List<Event> collect = events.stream()
-                .filter(event -> event.getMarkets().stream().
-                        map(Market::getSelections).
-                        flatMap(Collection::stream).
-                        anyMatch(selection -> selection.getPrice().compareTo(priceFirst) >= 0 && selection.getPrice().compareTo(priceSecond) <= 0))
+
+
+        final List<Event> events = eventRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(x -> x, priceExtractingFunction))
+                .entrySet()
+                .stream()
+                .filter(x -> x.getValue()
+                        .stream()
+                        .anyMatch(price -> price.compareTo(priceFirst) >= 0 && price.compareTo(priceSecond) <= 0))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
+                .keySet()
+                .stream()
                 .toList();
-        return new PageImpl<>(collect, pageable, collect.size());
+
+        return new PageImpl<>(events, pageable, events.size());
     }
 
     @Override
     public List<BigDecimal> priceOfEvent(UUID eventId) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
-        List<Event> events = eventOptional.stream().toList();
-        return events.stream()
-                .map(event -> event.getMarkets())
-                .flatMap(List::stream)
-                .toList()
-                .stream().map(market -> market.getSelections())
-                .flatMap(List::stream)
-                .toList()
-                .stream().map(selection -> selection.getPrice())
+        return eventOptional
+                .stream()
+                .flatMap(event -> event.getMarkets().stream())
+                .flatMap(market -> market.getSelections().stream())
+                .map(Selection::getPrice)
                 .toList();
     }
 
     @Override
-    public Page<Event> getSortedEventsByPrice(Pageable pageable) {
-        List<Event> events = eventRepository.findAll();
-        List<Event> sortedEvents = events.stream()
-//                .filter(event -> event.getMarkets().stream().
-//                        map(Market::getSelections).
-//                        flatMap(Collection::stream).
-//                        allMatch(selection -> selection.getPrice()))
-                .toList();
-        return new PageImpl<>(sortedEvents, pageable, sortedEvents.size());
+    public Page<Event> getSortedDescendingMarketsByPrice(Pageable pageable) {
+        List<Event> events = eventRepository.findAll()
+                .stream()
+                .map(event -> {
+                    final List<Market> markets = event.getMarkets()
+                            .stream()
+                            .map(market -> new Container(market, market.getSelections()
+                                    .stream()
+                                    .sorted(Comparator.comparing(Selection::getPrice))
+                                    .toList()))
+                            .sorted(Comparator.comparing(x -> x.selections.stream()
+                                    .findFirst()
+                                    .map(Selection::getPrice)
+                                    .orElseThrow(), Comparator.reverseOrder()))
+                            .map(x -> {
+                                Market market = x.market;
+                                market.setSelections(x.selections);
+                                return market;
+                            }).toList();
 
-        //not work
+                    event.setMarkets(markets);
+
+                    return event;
+                }).toList();
+
+        return new PageImpl<>(events, pageable, events.size());
     }
 
     @Override
@@ -144,32 +169,19 @@ public class EventServiceImpl implements EventService {
         return new PageImpl<>(events, pageable, events.size());
     }
 
-
     @Override
-    public List<Selection> getAveragePricesForPreMatchMarkets() {
-        long data = new Date().getTime();
+    public Double getAveragePricesForPreMatchMarkets() {
 
-        List<Event> allEvents = eventRepository.findAll();
-        List<Event> preMatchEvents = allEvents.stream()
-                .filter(event -> event.getStartTime().getTime() < data).toList();
-//        List<BigDecimal> prices = preMatchEvents.stream().map(event -> event.getMarkets().stream().toList().stream().map(market -> market.getSelections().stream().toList().stream().map(selection -> selection.getPrice())));
+        return eventRepository.findAll()
+                .stream()
+                .filter(Event::isPrematch)
+                .flatMap(x -> x.getMarkets().stream())
+                .flatMap(x -> x.getSelections().stream())
+                .mapToDouble(x -> x.getPrice().doubleValue())
+                .average()
+                .orElseThrow();
 
-        preMatchEvents.stream().
-                filter(event -> Stream.of(event.getId())
-                        .equals(event.getMarkets().stream().map(market -> {
-                            market.getEvent().getId();
-                            Stream.of(market.getId()).equals(market.getSelections().stream().map(selection -> selection.getId()));
-                            return null;
-                        })));
-        List<Selection> markets = preMatchEvents.stream().map(event -> event.getMarkets()).toList().stream().flatMap(List::stream).toList().stream().map(market -> market.getSelections()).toList().stream().flatMap(List::stream).toList();
-
-
-//        List<Market> markets = preMatchEvents.stream().flatMap(event -> event.getMarkets());
-//        System.out.println("fffffffff"+prices);
-//       return prices;
-        return markets;
-
-        //not work
+        //not working
     }
 
     @Override
@@ -194,6 +206,13 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> getEventsWithDuplicatedParticipantAndDifferentYears() {
         List<Event> allEvents = eventRepository.findAll();
+//        List<Event> eventToFilter = allEvents.stream()
+//                .map(event -> {
+//
+//
+//                })
+
+
         List<String> name = allEvents.stream().map(event -> event.getParticipants().stream().map(Participant::getName).toList()).toList().stream().flatMap(List::stream).toList();
         List<String> duplicated = name.stream().filter(i -> Collections.frequency(name, i) > 1).toList();
         List<Event> events = new ArrayList<>();
@@ -203,7 +222,22 @@ public class EventServiceImpl implements EventService {
             events.addAll(allEvents.stream().filter(event -> event.getParticipants().stream().map(Participant::getName).equals(Stream.of(duplicated.get(finalI)))).toList());
         }
         return events;
+
+        //not working
     }
 
-    //not work
+    @Override
+    public BigDecimal maxPayoutPerEvent(UUID eventId) {
+        Optional<Event> eventOptional = eventRepository.findById(eventId);
+        List<BigDecimal> allPrices = eventOptional.stream().toList().stream()
+                .flatMap(event -> event.getMarkets().stream())
+                .flatMap(market -> market.getSelections().stream())
+                .map(Selection::getPrice)
+                .toList();
+
+        return Collections.max(allPrices);
+    }
+
+    record Container(Market market, List<Selection> selections) {
+    }
 }

@@ -2,7 +2,6 @@ package com.maria.crudapp_participants.facade;
 
 import com.maria.crudapp_participants.dto.EventDTO;
 import com.maria.crudapp_participants.entity.Event;
-import com.maria.crudapp_participants.entity.Market;
 import com.maria.crudapp_participants.selections.Selection;
 import com.maria.crudapp_participants.service.EventService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,9 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.OptionalDouble;
 import java.util.UUID;
+import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 @Component
@@ -86,8 +87,8 @@ public class EventFacadeImpl implements EventFacade {
     }
 
     @Override
-    public Page<EventDTO> getSortedEventsByPrice(Pageable pageable) {
-        Page<Event> events = eventService.getSortedEventsByPrice(pageable);
+    public Page<EventDTO> getSortedDescendingMarketsByPrice(Pageable pageable) {
+        Page<Event> events = eventService.getSortedDescendingMarketsByPrice(pageable);
         List<EventDTO> eventsDTO = events.getContent().stream().map(eventToEventDTOConverter::convert).toList();
         return new PageImpl<>(eventsDTO, events.getPageable(), events.getTotalElements());
     }
@@ -105,7 +106,12 @@ public class EventFacadeImpl implements EventFacade {
     }
 
     @Override
-    public  List<Selection>  getAveragePricesForPreMatchMarkets() {
+    public Double getAveragePricesForPreMatchMarkets() {
         return eventService.getAveragePricesForPreMatchMarkets();
+    }
+
+    @Override
+    public BigDecimal maxPayoutPerEvent(UUID eventId) {
+        return eventService.maxPayoutPerEvent(eventId);
     }
 }

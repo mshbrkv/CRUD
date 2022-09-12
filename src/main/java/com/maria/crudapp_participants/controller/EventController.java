@@ -3,7 +3,6 @@ package com.maria.crudapp_participants.controller;
 import com.maria.crudapp_participants.dto.EventDTO;
 import com.maria.crudapp_participants.dto.ShortEvent;
 import com.maria.crudapp_participants.entity.Event;
-import com.maria.crudapp_participants.entity.Market;
 import com.maria.crudapp_participants.facade.EventFacade;
 import com.maria.crudapp_participants.selections.Selection;
 import com.maria.crudapp_participants.service.EventService;
@@ -14,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.OptionalDouble;
 import java.util.UUID;
+import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 @RestController
@@ -72,9 +73,9 @@ public class EventController {
         return eventFacade.findEventsByPriceRange(from, to, pageable);
     }
 
-    @GetMapping("sorted_by_price")
-    public Page<EventDTO> getSortedEventsByPrice(Pageable pageable) {
-        return eventFacade.getSortedEventsByPrice(pageable);
+    @GetMapping("sorted_markets_desc_by_price")
+    public Page<EventDTO> getSortedDescendingMarketsByPrice(Pageable pageable) {
+        return eventFacade.getSortedDescendingMarketsByPrice(pageable);
     }
 
     @GetMapping("search/without")
@@ -88,18 +89,23 @@ public class EventController {
     }
 
     @GetMapping("pricesMarkets")
-    public   List<Selection> getAveragePricesForPreMatchMarkets() {
+    public Double  getAveragePricesForPreMatchMarkets() {
         return eventFacade.getAveragePricesForPreMatchMarkets();
     }
 
     @GetMapping("shortEvents")
-    public List<ShortEvent> getAllShortEvents(){
+    public List<ShortEvent> getAllShortEvents() {
         return eventService.allShortEvent();
     }
 
     @GetMapping("names")
-    public  List<Event> getDuplicate(){
+    public List<Event> getDuplicate() {
         return eventService.getEventsWithDuplicatedParticipantAndDifferentYears();
+    }
+
+    @GetMapping("maxPayout/{id}")
+    public BigDecimal maxPayoutPerEvent(@PathVariable UUID id) {
+        return eventService.maxPayoutPerEvent(id);
     }
 
 }
