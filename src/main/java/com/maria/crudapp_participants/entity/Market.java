@@ -38,4 +38,7 @@ public class Market {
     @Type(type = "json")
     @Column(name = "selections_id", columnDefinition = "jsonb")
     private List<Selection> selections; //json with selections, every selection has name and price
+
+    public Market(UUID fromString) {
+    }
 }

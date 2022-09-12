@@ -22,4 +22,7 @@ public class MarketDTO {
     @JsonIgnore
     private Event event;
     private List<Selection> selections;
+
+    public MarketDTO(UUID fromString) {
+    }
 }
