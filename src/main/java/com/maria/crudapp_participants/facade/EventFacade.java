@@ -1,16 +1,13 @@
 package com.maria.crudapp_participants.facade;
 
 import com.maria.crudapp_participants.dto.EventDTO;
-import com.maria.crudapp_participants.selections.Selection;
+import com.maria.crudapp_participants.entity.Event;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.OptionalDouble;
 import java.util.UUID;
-import java.util.stream.DoubleStream;
-import java.util.stream.Stream;
 
 public interface EventFacade {
     Page<EventDTO> getEventList(Pageable pageable);
@@ -37,8 +34,9 @@ public interface EventFacade {
 
     List<BigDecimal> priceOfEvent(UUID eventId);
 
-    Double getAveragePricesForPreMatchMarkets();
-
+    List<Double> getAveragePricesForPreMatchMarkets();
 
     BigDecimal maxPayoutPerEvent(UUID eventId);
+
+    List<Event> getEventsWithDuplicatedParticipantAndDifferentYears();
 }

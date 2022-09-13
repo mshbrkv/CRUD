@@ -54,9 +54,9 @@ public class Event {
     private List<Market> markets;
 
 
-    public boolean isPrematch() {
+    public boolean isPreMatch() {
 
-        return startTime.getTime() > new Date().getTime();
+        return startTime.getTime() < new Date().getTime();
     }
 }
 

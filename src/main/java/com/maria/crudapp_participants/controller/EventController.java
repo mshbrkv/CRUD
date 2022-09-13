@@ -89,7 +89,7 @@ public class EventController {
     }
 
     @GetMapping("pricesMarkets")
-    public Double  getAveragePricesForPreMatchMarkets() {
+    public List<Double> getAveragePricesForPreMatchMarkets() {
         return eventFacade.getAveragePricesForPreMatchMarkets();
     }
 
@@ -98,14 +98,14 @@ public class EventController {
         return eventService.allShortEvent();
     }
 
-    @GetMapping("names")
-    public List<Event> getDuplicate() {
-        return eventService.getEventsWithDuplicatedParticipantAndDifferentYears();
+    @GetMapping("duplicate")
+    public List<Event> getEventsWithDuplicatedParticipantAndDifferentYears() {
+        return eventFacade.getEventsWithDuplicatedParticipantAndDifferentYears();
     }
 
     @GetMapping("maxPayout/{id}")
     public BigDecimal maxPayoutPerEvent(@PathVariable UUID id) {
-        return eventService.maxPayoutPerEvent(id);
+        return eventFacade.maxPayoutPerEvent(id);
     }
 
 }

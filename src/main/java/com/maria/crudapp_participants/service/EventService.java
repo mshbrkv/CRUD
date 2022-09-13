@@ -40,7 +40,7 @@ public interface EventService {
 
     List<BigDecimal> priceOfEvent(UUID eventId);
 
-    Double  getAveragePricesForPreMatchMarkets();
+    List<Double> getAveragePricesForPreMatchMarkets();
 
     ShortEvent converterToShortEvent(Event event);
 

@@ -106,12 +106,17 @@ public class EventFacadeImpl implements EventFacade {
     }
 
     @Override
-    public Double getAveragePricesForPreMatchMarkets() {
+    public List<Double> getAveragePricesForPreMatchMarkets() {
         return eventService.getAveragePricesForPreMatchMarkets();
     }
 
     @Override
     public BigDecimal maxPayoutPerEvent(UUID eventId) {
         return eventService.maxPayoutPerEvent(eventId);
+    }
+
+    @Override
+    public List<Event> getEventsWithDuplicatedParticipantAndDifferentYears() {
+        return eventService.getEventsWithDuplicatedParticipantAndDifferentYears();
     }
 }
