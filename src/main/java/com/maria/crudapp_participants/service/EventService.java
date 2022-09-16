@@ -2,16 +2,12 @@ package com.maria.crudapp_participants.service;
 
 import com.maria.crudapp_participants.dto.ShortEvent;
 import com.maria.crudapp_participants.entity.Event;
-import com.maria.crudapp_participants.selections.Selection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.OptionalDouble;
 import java.util.UUID;
-import java.util.stream.DoubleStream;
-import java.util.stream.Stream;
 
 
 public interface EventService {
@@ -46,7 +42,7 @@ public interface EventService {
 
     List<ShortEvent> allShortEvent();
 
-    List<Event> getEventsWithDuplicatedParticipantAndDifferentYears();
+    Page<Event> getEventsWithDuplicatedParticipantAndDifferentYears(Pageable pageable);
 
     BigDecimal maxPayoutPerEvent(UUID eventId);
 }

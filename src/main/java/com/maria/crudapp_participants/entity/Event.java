@@ -56,7 +56,7 @@ public class Event {
 
     public boolean isPreMatch() {
 
-        return startTime.getTime() < new Date().getTime();
+        return startTime.getTime() > new Date().getTime();
     }
 }
 

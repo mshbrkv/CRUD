@@ -12,11 +12,4 @@ import java.util.UUID;
 
 public interface MarketRepository extends JpaRepository<Market, UUID> {
 
-//    @Query("select m from Market m inner join m.selections selections where selections.price > ?1")
-//    Page<Market> findBySelectionsPriceAfter(int number);
-//
-//    @Query("""
-//        select m from Market m
-//        where upper(m.name) like upper(concat('%', :searchString, '%')) or upper(m.marketTemplateName) like upper(concat('%', :searchString, '%')) or upper(m.eventId) like upper(concat('%', :searchString, '%')) or upper(m.selections) like upper(concat('%', :searchString, '%'))""")
-//    Page<Market> searchByAllFields(@Param("searchString") String searchString, Pageable pageable);
 }

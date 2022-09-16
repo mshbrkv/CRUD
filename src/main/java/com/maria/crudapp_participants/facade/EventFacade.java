@@ -1,7 +1,7 @@
 package com.maria.crudapp_participants.facade;
 
 import com.maria.crudapp_participants.dto.EventDTO;
-import com.maria.crudapp_participants.entity.Event;
+import com.maria.crudapp_participants.dto.ShortEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -38,5 +38,7 @@ public interface EventFacade {
 
     BigDecimal maxPayoutPerEvent(UUID eventId);
 
-    List<Event> getEventsWithDuplicatedParticipantAndDifferentYears();
+    Page<EventDTO> getEventsWithDuplicatedParticipantAndDifferentYears(Pageable pageable);
+
+    List<ShortEvent> getAllShortEvents();
 }

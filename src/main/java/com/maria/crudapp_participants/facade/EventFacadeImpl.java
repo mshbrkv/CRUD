@@ -1,8 +1,8 @@
 package com.maria.crudapp_participants.facade;
 
 import com.maria.crudapp_participants.dto.EventDTO;
+import com.maria.crudapp_participants.dto.ShortEvent;
 import com.maria.crudapp_participants.entity.Event;
-import com.maria.crudapp_participants.selections.Selection;
 import com.maria.crudapp_participants.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
@@ -13,10 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.OptionalDouble;
 import java.util.UUID;
-import java.util.stream.DoubleStream;
-import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -116,7 +113,14 @@ public class EventFacadeImpl implements EventFacade {
     }
 
     @Override
-    public List<Event> getEventsWithDuplicatedParticipantAndDifferentYears() {
-        return eventService.getEventsWithDuplicatedParticipantAndDifferentYears();
+    public Page<EventDTO> getEventsWithDuplicatedParticipantAndDifferentYears(Pageable pageable) {
+        Page<Event> events = eventService.getEventsWithDuplicatedParticipantAndDifferentYears(pageable);
+        List<EventDTO> eventDTO = events.getContent().stream().map(eventToEventDTOConverter::convert).toList();
+        return new PageImpl<>(eventDTO, events.getPageable(), events.getTotalElements());
+    }
+
+    @Override
+    public List<ShortEvent> getAllShortEvents() {
+        return eventService.allShortEvent();
     }
 }
