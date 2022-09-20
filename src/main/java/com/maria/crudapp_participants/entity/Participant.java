@@ -19,13 +19,16 @@ public class Participant {
     @Type(type = "uuid-char")
     @Column(name = "id", nullable = false)
     private UUID id = UUID.randomUUID();
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "sport")
     private String sport;
+
     @Column(name = "country")
     private String country;
+
     @Column(name = "external_id")
     private int externalId;
-
 }

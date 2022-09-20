@@ -83,6 +83,9 @@ const ParticipantsList = () => {
                     }}/>
                     <button type="submit" onClick={handleSubmit}>Search</button>
                 </form>
+
+
+
                 <table>
                     <thead>
                     <tr>

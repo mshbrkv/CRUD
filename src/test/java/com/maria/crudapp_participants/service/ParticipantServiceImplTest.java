@@ -114,7 +114,7 @@ class ParticipantServiceImplTest {
     void searchFlexible(String searchString, Page<Participant> participants) {
         Pageable pageable = PageRequest.of(0, 3);
 
-        when(participantRepository.searchByAllFields(searchString, pageable)).thenReturn(participants);
+        when(participantRepository.searchFlexible(searchString, searchString,searchString,PageRequest.of(0, 3))).thenReturn(participants);
 
         Page<Participant> result = participantService.searchFlexible(searchString, pageable);
 
