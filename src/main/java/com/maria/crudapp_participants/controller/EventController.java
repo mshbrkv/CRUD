@@ -3,7 +3,8 @@ package com.maria.crudapp_participants.controller;
 import com.maria.crudapp_participants.dto.EventDTO;
 import com.maria.crudapp_participants.dto.ShortEvent;
 import com.maria.crudapp_participants.facade.EventFacade;
-import com.maria.crudapp_participants.service.EventService;
+import com.maria.crudapp_participants.selections.Selection;
+import com.maria.crudapp_participants.service.SelectionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -19,8 +21,9 @@ import java.util.UUID;
 @RequestMapping("/events")
 public class EventController {
 
+    private final SelectionService selectionService;
     private final EventFacade eventFacade;
-    private final EventService eventService;
+//    private final EventService eventService;
 
     @GetMapping
     public Page<EventDTO> getEventList(Pageable pageable) {
@@ -103,4 +106,8 @@ public class EventController {
         return eventFacade.maxPayoutPerEvent(id);
     }
 
+    @PostMapping("eventId/{eventId}/market/{marketId}/selection/{selectionId}")
+    public Optional<Selection> addSelectionResult(@PathVariable UUID eventId, @PathVariable UUID marketId, @PathVariable UUID selectionId, @RequestBody String result) {
+        return selectionService.updateSelectionWithResult(selectionId, result);
+    }
 }

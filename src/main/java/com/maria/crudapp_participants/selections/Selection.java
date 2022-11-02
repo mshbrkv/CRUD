@@ -33,4 +33,7 @@ public class Selection {
     @JoinColumn(name = "market_id")
     @JsonIgnore
     private Market market;
+
+    @Column(name="result")
+    private String result;
 }
