@@ -40,8 +40,8 @@ class EventControllerTest {
 
         Participant participant1 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
         Participant participant2 = new Participant(UUID.fromString("5af40425-8b62-4fa3-94be-4babccfe97ea"), "Arsenal", "football", "Moldova", 342);
-        Selection selection1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(10.5), new Market());
-        Selection selection2 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(2.0), new Market());
+        Selection selection1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(10.5), new Market(), null);
+        Selection selection2 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(2.0), new Market(),null);
         Market market1 = new Market(UUID.fromString("940ec9e2-cc4d-4c3f-a9cc-a804760272f8"), "Double Chance", null, null, Arrays.asList(selection1, selection2));
         return new EventDTO(UUID.fromString("f15ef034-4f9a-4be1-a0c0-dd09e154e48d"), "null", Date.valueOf("2027-09-10"), true, Arrays.asList(participant1, participant2), List.of(market1));
     }
@@ -147,14 +147,14 @@ class EventControllerTest {
     void getSortedDescendingMarketsByPrice() {
         Pageable pageable = PageRequest.of(0, 3);
 
-        Selection selection1ForEvent1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(10.5), new Market());
-        Selection selection2ForEvent1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(2.0), new Market());
+        Selection selection1ForEvent1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(10.5), new Market(), null);
+        Selection selection2ForEvent1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(2.0), new Market(),null);
         Market market1ForEvent1 = new Market(UUID.fromString("940ec9e2-cc4d-4c3f-a9cc-a804760272f8"), "Double Chance", null, null, Arrays.asList(selection1ForEvent1, selection2ForEvent1));
         Market market2ForEvent1 = new Market(UUID.fromString("d69e0c62-1715-4764-92d9-f33200b17e2e"), "Double Chance", null, null, Arrays.asList(selection1ForEvent1, selection2ForEvent1));
 
 
-        Selection selection1ForEvent2 = new Selection(UUID.fromString("a92e3ec6-c468-4be2-b0d2-7e1e55c558c5"), "aaaaaa", BigDecimal.valueOf(16534.5), new Market());
-        Selection selection2ForEvent2 = new Selection(UUID.fromString("a001749a-6c39-4bae-a140-d730e88deb1d"), "aaaaaa", BigDecimal.valueOf(6.0), new Market());
+        Selection selection1ForEvent2 = new Selection(UUID.fromString("a92e3ec6-c468-4be2-b0d2-7e1e55c558c5"), "aaaaaa", BigDecimal.valueOf(16534.5), new Market(), null);
+        Selection selection2ForEvent2 = new Selection(UUID.fromString("a001749a-6c39-4bae-a140-d730e88deb1d"), "aaaaaa", BigDecimal.valueOf(6.0), new Market(),null);
         Market marketForEvent2 = new Market(UUID.fromString("fed7d852-aa11-41a5-9435-bdb82a03904e"), "Double Chance", null, null, Arrays.asList(selection2ForEvent2, selection1ForEvent2));
 
 

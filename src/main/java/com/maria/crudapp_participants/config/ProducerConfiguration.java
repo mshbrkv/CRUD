@@ -1,8 +1,8 @@
 package com.maria.crudapp_participants.config;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,14 +16,22 @@ import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
-public class ProducerConfig {
+public class ProducerConfiguration {
     @Value(value = "${spring.kafka.bootstrapServers}")
     private String bootstrapAddress;
+
+    @Value(value = "${key.serializer}")
+    private String keySerializer;
+    @Value(value = "${value.serializer}")
+    private String valueSerializer;
+
 
     @Bean
     public Map<String, Object> configs() {
         Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);
+        configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueSerializer);
         return configs;
     }
 
