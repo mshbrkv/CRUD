@@ -1,6 +1,9 @@
 package com.maria.crudapp_participants.config;
 
+import com.maria.crudapp_participants.selections.Selection;
+import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import lombok.RequiredArgsConstructor;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +35,7 @@ public class ProducerConfiguration {
         configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);
         configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueSerializer);
+        configs.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "https://localhost:8083");
         return configs;
     }
 
@@ -45,12 +49,12 @@ public class ProducerConfiguration {
     }
 
     @Bean
-    public ProducerFactory<String, String> producerFactory() {
+    public ProducerFactory<String, GenericRecord> producerFactory() {
         return new DefaultKafkaProducerFactory<>(configs());
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate() {
+    public KafkaTemplate<String, GenericRecord> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

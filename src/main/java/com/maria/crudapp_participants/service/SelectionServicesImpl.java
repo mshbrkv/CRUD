@@ -31,8 +31,5 @@ public class SelectionServicesImpl implements SelectionService {
         });
 
         return selection;
-
     }
-
-
 }
