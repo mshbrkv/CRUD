@@ -1,5 +1,6 @@
 package com.maria.crudapp_participants.controller;
 
+import com.maria.crudapp_participants.controller.EventController;
 import com.maria.crudapp_participants.dto.EventDTO;
 import com.maria.crudapp_participants.dto.ShortEvent;
 import com.maria.crudapp_participants.entity.Market;

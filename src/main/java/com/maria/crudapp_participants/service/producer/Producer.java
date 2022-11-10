@@ -1,32 +1,39 @@
 package com.maria.crudapp_participants.service.producer;
 
-import com.maria.crudapp_participants.selections.Selection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.example.messaging.Selection;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class Producer {
 
-    private final KafkaTemplate<String, GenericRecord> kafkaTemplate;
+    private final KafkaTemplate<String, org.example.messaging.Selection> kafkaTemplate;
 
-    String selectionSchema = "{\"type\":\"record\",\"" +
-            "                    \"\"name\":\"record\",\"" +
-            "                    \"\"fields\":[{\"name:\":\"id\", \"type\":\"UUID\"},{\"name:\":\"name\", \"type\":\"String\"},{\"name:\":\"price\", \"type\":\"BigDecimal\"},{\"name:\":\"market\", \"type\":\"Market\"},{\"name:\":\"result\", \"type\":\"String\"}]}";
-    Schema.Parser parser = new Schema.Parser();
-    Schema schema = parser.parse(selectionSchema);
-    GenericRecord avroRecord = new GenericData.Record(schema);
-    ProducerRecord<Object, Object> record = new ProducerRecord<>("t.trading.selection", null, avroRecord);
 
     public void sendMessage(Selection selection) {
-        kafkaTemplate.send("t.trading.selection", avroRecord);
+        ListenableFuture<SendResult<String, Selection>> future = kafkaTemplate.send("t.trading.selection", String.valueOf(selection.getId()), selection);
+        future.addCallback(new ListenableFutureCallback<SendResult<String, Selection>>() {
+            @Override
+            public void onFailure(Throwable ex) {
+                System.out.println("Message failed to produce");
+            }
+
+            @Override
+            public void onSuccess(SendResult<String, Selection> result) {
+                System.out.println("avro massage successfully produce");
+            }
+        });
     }
 
 }

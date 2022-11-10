@@ -25,11 +25,16 @@ public class SelectionServicesImpl implements SelectionService {
     @Transactional
     public Optional<Selection> updateSelectionWithResult(UUID selectionId, String result) {
         Optional<Selection> selection = selectionRepository.findById(selectionId);
-        selection.ifPresent(value -> {
-            value.setResult(result);
-            producer.sendMessage(value);
-        });
-
+        org.example.messaging.Selection selectionAvro = org.example.messaging.Selection.newBuilder().build();
+        if (selection.isPresent()) {
+            selection.get().setResult(result);
+            selectionAvro.setId(selectionId.toString());
+            selectionAvro.setName(selection.get().getName());
+            selectionAvro.setPrice(selection.get().getPrice().doubleValue());
+            selectionAvro.setMarket(selection.get().getMarket().toString());
+            selectionAvro.setResult(selection.get().getResult());
+            producer.sendMessage(selectionAvro);
+        }
         return selection;
     }
 }

@@ -1,11 +1,13 @@
 package com.maria.crudapp_participants.config;
 
-import com.maria.crudapp_participants.selections.Selection;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
+import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import lombok.RequiredArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.example.messaging.Selection;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,8 +35,8 @@ public class ProducerConfiguration {
     public Map<String, Object> configs() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);
-        configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueSerializer);
+        configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
         configs.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "https://localhost:8083");
         return configs;
     }
@@ -49,12 +51,12 @@ public class ProducerConfiguration {
     }
 
     @Bean
-    public ProducerFactory<String, GenericRecord> producerFactory() {
+    public ProducerFactory<String, Selection> producerFactory() {
         return new DefaultKafkaProducerFactory<>(configs());
     }
 
     @Bean
-    public KafkaTemplate<String, GenericRecord> kafkaTemplate() {
+    public KafkaTemplate<String, Selection> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
