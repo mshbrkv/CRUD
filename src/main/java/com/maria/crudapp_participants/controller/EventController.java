@@ -23,7 +23,6 @@ public class EventController {
 
     private final SelectionService selectionService;
     private final EventFacade eventFacade;
-//    private final EventService eventService;
 
     @GetMapping
     public Page<EventDTO> getEventList(Pageable pageable) {

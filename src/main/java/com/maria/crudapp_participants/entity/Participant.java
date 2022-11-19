@@ -30,5 +30,5 @@ public class Participant {
     private String country;
 
     @Column(name = "external_id")
-    private int externalId;
+    private String externalId;
 }

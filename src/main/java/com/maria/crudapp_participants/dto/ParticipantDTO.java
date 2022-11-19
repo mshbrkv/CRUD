@@ -16,5 +16,5 @@ public class ParticipantDTO {
     private String name;
     private String sport;
     private String country;
-    private int externalId;
+    private String externalId;
 }

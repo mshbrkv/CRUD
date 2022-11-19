@@ -1,12 +1,9 @@
 package com.maria.crudapp_participants.config;
 
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
-import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import lombok.RequiredArgsConstructor;
-import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.example.messaging.Selection;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,19 +22,21 @@ public class ProducerConfiguration {
     @Value(value = "${spring.kafka.bootstrapServers}")
     private String bootstrapAddress;
 
-    @Value(value = "${key.serializer}")
+    @Value(value = "${spring.kafka.producer.key-serializer}")
     private String keySerializer;
-    @Value(value = "${value.serializer}")
+    @Value(value = "${spring.kafka.producer.value-serializer}")
     private String valueSerializer;
+    @Value(value = "${spring.kafka.producer.properties.schema.reqistry.url}")
+    private String schemaRegistry;
 
 
     @Bean
     public Map<String, Object> configs() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
-        configs.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "https://localhost:8083");
+        configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);
+        configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueSerializer);
+        configs.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistry);
         return configs;
     }
 
@@ -50,6 +49,10 @@ public class ProducerConfiguration {
                 .build();
     }
 
+    //    @Bean
+//    public ProducerFactory<String, String> producerFactory() {
+//        return new DefaultKafkaProducerFactory<>(configs());
+//    }
     @Bean
     public ProducerFactory<String, Selection> producerFactory() {
         return new DefaultKafkaProducerFactory<>(configs());
