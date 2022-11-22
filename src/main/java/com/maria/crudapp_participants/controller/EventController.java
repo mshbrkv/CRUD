@@ -32,7 +32,7 @@ public class EventController {
     @GetMapping("{id}")
     public EventDTO getEventById(@PathVariable("id") UUID eventId) {
         return eventFacade.getEventById(eventId);
-    }
+    } //дублирование по количеству селекшенов
 
     @GetMapping("/in_play=true")
     public Page<EventDTO> getEventInPlay(Pageable pageable) {

@@ -32,11 +32,12 @@ public class SelectionServicesImpl implements SelectionService {
                     .setPrice(selection.get().getPrice().doubleValue())
                     .setMarket(selection.get().getMarket().getId().toString())
                     .setResult(result)
+                    .setSport(selection.get().getMarket().getEvent().getParticipants().get(0).getSport())
                     .build();
             selection.get().setResult(result);
 
+
             producer.sendMessage(selectionAvro);
-//            producer.sendMessage(selection.get());
 
             return selection;
         }
