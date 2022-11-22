@@ -3,6 +3,8 @@ package com.maria.crudapp_participants.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.maria.crudapp_participants.selections.Selection;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -30,10 +32,12 @@ public class Market {
 
     @ManyToOne
     @JoinColumn(name = "event_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Event event;
 
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "market")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Type(type = "json")
     @Column(name = "selections_id", columnDefinition = "jsonb")
     private List<Selection> selections; //json with selections, every selection has name and price

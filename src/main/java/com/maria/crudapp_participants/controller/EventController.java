@@ -40,7 +40,7 @@ public class EventController {
     }
 
 
-    @PostMapping
+    @PostMapping("/new_event")
     public EventDTO createEvent(@RequestBody EventDTO event) {
         return eventFacade.saveEvent(event);
     }

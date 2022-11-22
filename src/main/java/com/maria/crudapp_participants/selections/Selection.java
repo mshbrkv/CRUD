@@ -3,6 +3,8 @@ package com.maria.crudapp_participants.selections;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.maria.crudapp_participants.entity.Market;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -31,6 +33,7 @@ public class Selection {
     private BigDecimal price;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "market_id")
     @JsonIgnore
     private Market market;
