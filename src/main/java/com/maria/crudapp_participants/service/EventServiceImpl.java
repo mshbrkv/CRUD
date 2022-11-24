@@ -137,7 +137,8 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Page<Event> getSortedDescendingMarketsByPrice(Pageable pageable) {
-        List<Event> events = eventRepository.findAll().stream().map(event -> {
+        List<Event> events = eventRepository.findAll()
+                .stream().map(event -> {
             final List<Market> markets = event.getMarkets().stream().map(market -> new Container(market, market.getSelections().stream().sorted(Comparator.comparing(Selection::getPrice)).toList())).sorted(Comparator.comparing(x -> x.selections.stream().findFirst().map(Selection::getPrice).orElseThrow(), Comparator.reverseOrder())).map(x -> {
                 Market market = x.market;
                 market.setSelections(x.selections);

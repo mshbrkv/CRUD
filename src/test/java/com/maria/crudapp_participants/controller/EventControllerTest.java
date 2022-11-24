@@ -39,8 +39,8 @@ class EventControllerTest {
     static EventDTO generateEvent() {
 
 
-        Participant participant1 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
-        Participant participant2 = new Participant(UUID.fromString("5af40425-8b62-4fa3-94be-4babccfe97ea"), "Arsenal", "football", "Moldova", 342);
+        Participant participant1 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", "342");
+        Participant participant2 = new Participant(UUID.fromString("5af40425-8b62-4fa3-94be-4babccfe97ea"), "Arsenal", "football", "Moldova", "342");
         Selection selection1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(10.5), new Market(), null);
         Selection selection2 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(2.0), new Market(),null);
         Market market1 = new Market(UUID.fromString("940ec9e2-cc4d-4c3f-a9cc-a804760272f8"), "Double Chance", null, null, Arrays.asList(selection1, selection2));
@@ -186,8 +186,8 @@ class EventControllerTest {
 
         Pageable pageable = PageRequest.of(0, 3);
         EventDTO event2 = generateEvent();
-        Participant participant1 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "basketball", "Moldova", 342);
-        Participant participant2 = new Participant(UUID.fromString("9d9254ac-1257-11ed-861d-0242ac120002"), "Sferiff", "basketball", "Moldova", 342);
+        Participant participant1 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "basketball", "Moldova", "342");
+        Participant participant2 = new Participant(UUID.fromString("9d9254ac-1257-11ed-861d-0242ac120002"), "Sferiff", "basketball", "Moldova", "342");
         event2.setParticipants(Arrays.asList(participant1, participant2));
         List<EventDTO> allEvents = Arrays.asList(event2);
         Page<EventDTO> expected = new PageImpl<>(allEvents);

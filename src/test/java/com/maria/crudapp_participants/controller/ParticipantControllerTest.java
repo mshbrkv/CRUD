@@ -30,8 +30,8 @@ class ParticipantControllerTest {
     @Test
     public void GetParticipantsWhenQueryIsNull() {
         Pageable pageable = PageRequest.of(0, 3);
-        ParticipantDTO participant1 = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
-        ParticipantDTO participant2 = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
+        ParticipantDTO participant1 = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", "342");
+        ParticipantDTO participant2 = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", "342");
         List<ParticipantDTO> participantList = Arrays.asList(participant1, participant2);
         Page<ParticipantDTO> participantPage = new PageImpl<>(participantList);
         when(participantFacade.fetchParticipantsList("", pageable)).thenReturn(participantPage);
@@ -42,8 +42,8 @@ class ParticipantControllerTest {
     @Test
     public void GetParticipantsWhenQueryNotNull() {
         Pageable pageable = PageRequest.of(0, 3);
-        ParticipantDTO participant1 = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
-        ParticipantDTO participant2 = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
+        ParticipantDTO participant1 = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", "342");
+        ParticipantDTO participant2 = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", "342");
         List<ParticipantDTO> participantList = Arrays.asList(participant1, participant2);
         Page<ParticipantDTO> participantPage = new PageImpl<>(participantList);
         when(participantFacade.fetchParticipantsList("Sh", pageable)).thenReturn(participantPage);
@@ -53,7 +53,7 @@ class ParticipantControllerTest {
 
     @Test
     void createParticipant() {
-        ParticipantDTO participant = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
+        ParticipantDTO participant = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", "342");
         when(participantFacade.saveParticipant(participant)).thenReturn(participant);
         ParticipantDTO res = participantController.createParticipant(participant);
         Assertions.assertEquals(participant, res);
@@ -61,7 +61,7 @@ class ParticipantControllerTest {
 
     @Test
     void updateParticipant() {
-        ParticipantDTO participant = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "GGGGG", "kkkkkk", "Moldova", 342);
+        ParticipantDTO participant = new ParticipantDTO(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "GGGGG", "kkkkkk", "Moldova", "342");
         when(participantFacade.updateParticipant(participant, UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"))).thenReturn(participant);
         ParticipantDTO res = participantController.updateParticipant(participant, UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"));
         Assertions.assertEquals(participant, res);

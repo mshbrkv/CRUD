@@ -21,7 +21,7 @@ INSERT INTO markets (id, market_name, market_template_name, event_id) values ('9
 INSERT INTO markets (id, market_name, market_template_name, event_id) values ('90f0895e-06f7-4d8c-a01f-534236d29980', 'Match Odds', 'MO', 'f15ef034-4f9a-4be1-a0c0-dd09e154e48d');
 
 INSERT INTO markets (id, market_name, market_template_name, event_id) values ('2f1841fa-2522-11ed-861d-0242ac120002', 'Double Chance', 'DC', 'feb995f8-0c85-49c4-a7a0-f7801dafc788');
-INSERT INTO markets (id, market_name, market_template_name, event_id) values ('11050d92-c1b2-45ab-ba5c-91128301cab1', 'Correct Score', 'DC', 'feb995f8-0c85-49c4-a7a0-f7801dafc788');
+-- INSERT INTO markets (id, market_name, market_template_name, event_id) values ('11050d92-c1b2-45ab-ba5c-91128301cab1', 'Correct Score', 'DC', 'feb995f8-0c85-49c4-a7a0-f7801dafc788');
 INSERT INTO markets (id, market_name, market_template_name, event_id) values ('6ba669dd-3685-40d5-935f-a7bdaea6a546', 'Draw No Bet', 'DNB', '092aa783-420b-4bcb-ad9b-18ac902b9132');
 INSERT INTO markets (id, market_name, market_template_name, event_id) values ('74c79923-3fac-45cd-9e05-7725b58618a6', 'Double Chance', 'dc', '092aa783-420b-4bcb-ad9b-18ac902b9132');
 INSERT INTO markets (id, market_name, market_template_name, event_id) values ('7e7f54c5-d7f8-421a-827e-bdf9bf3c929d', 'Correct Score', 'CS', '7293db19-bd20-47b7-b922-2508f083c355');
@@ -44,7 +44,7 @@ INSERT INTO selections(id, selection_name, price, market_id) values ('453b4ca9-4
 INSERT INTO selections(id, selection_name, price, market_id) values ('b7cbc6f3-52f1-470e-8dbb-50c56de764fb', 'dd', 9.54, '6ba669dd-3685-40d5-935f-a7bdaea6a546');
 INSERT INTO selections(id, selection_name, price, market_id) values ('c3d82fcf-8db6-4e6c-a18d-6c431faaa948', 'ee', 6.32, '7e7f54c5-d7f8-421a-827e-bdf9bf3c929d');
 INSERT INTO selections(id, selection_name, price, market_id) values ('fd22f5b9-39b8-4dd3-b1cd-db096f737733', 'ee', 3.32, '7e7f54c5-d7f8-421a-827e-bdf9bf3c929d');
-INSERT INTO selections(id, selection_name, price, market_id) values ('20e11e75-a03a-4f78-aa75-569cdddb25c7', 'ff', 5.98, '940ec9e2-cc4d-4c3f-a9cc-a804760272f8');
+INSERT INTO selections(id, selection_name, price, market_id) values ('20e11e75-a03a-4f78-aa75-569cdddb25c7', 'ff', 5.98, '74c79923-3fac-45cd-9e05-7725b58618a6');
 INSERT INTO selections(id, selection_name, price, market_id) values ('a4277ac7-0eca-4126-b31d-056f92e840d9', 'fff', 8.44, '940ec9e2-cc4d-4c3f-a9cc-a804760272f8');
 INSERT INTO selections(id, selection_name, price, market_id) values ('d9c84bf0-9092-4540-9bcc-0e083d7e5644', 'fff', 3.87, '940ec9e2-cc4d-4c3f-a9cc-a804760272f8');
 INSERT INTO selections(id, selection_name, price, market_id) values ('9f98e528-e27d-40d1-b7e1-bb13feeb40f8', 'gggg', 9.75, 'b21a22dd-4fc6-4593-99e2-269f981de3b3');

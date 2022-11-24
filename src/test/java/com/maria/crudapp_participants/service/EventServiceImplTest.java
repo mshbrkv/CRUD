@@ -1,5 +1,6 @@
 package com.maria.crudapp_participants.service;
 
+import com.maria.crudapp_participants.dto.ParticipantDTO;
 import com.maria.crudapp_participants.dto.ShortEvent;
 import com.maria.crudapp_participants.entity.Event;
 import com.maria.crudapp_participants.entity.Market;
@@ -7,7 +8,6 @@ import com.maria.crudapp_participants.entity.Participant;
 import com.maria.crudapp_participants.facade.ParticipantFacadeImpl;
 import com.maria.crudapp_participants.repository.EventRepository;
 import com.maria.crudapp_participants.selections.Selection;
-import com.maria.crudapp_participants.service.EventServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,10 +48,10 @@ class EventServiceImplTest {
     static Event generateEvent() {
 
 
-        Participant participant1 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
-        Participant participant2 = new Participant(UUID.fromString("5af40425-8b62-4fa3-94be-4babccfe97ea"), "Arsenal", "football", "Moldova", 342);
-        Selection selection1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(10.5), new Market(),null);
-        Selection selection2 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(2.0), new Market(),null);
+        Participant participant1 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", "342");
+        Participant participant2 = new Participant(UUID.fromString("5af40425-8b62-4fa3-94be-4babccfe97ea"), "Arsenal", "football", "Moldova", "342");
+        Selection selection1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(10.5), new Market(), null);
+        Selection selection2 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(2.0), new Market(), null);
         Market market1 = new Market(UUID.fromString("940ec9e2-cc4d-4c3f-a9cc-a804760272f8"), "Double Chance", null, null, Arrays.asList(selection1, selection2));
         return new Event(UUID.fromString("f15ef034-4f9a-4be1-a0c0-dd09e154e48d"), "null", Date.valueOf("2027-09-10"), true, Arrays.asList(participant1, participant2), List.of(market1));
     }
@@ -210,14 +210,14 @@ class EventServiceImplTest {
     void getSortedDescendingMarketsByPrice() {
         Pageable pageable = PageRequest.of(0, 3);
 
-        Selection selection1ForEvent1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(10.5), new Market(),null);
-        Selection selection2ForEvent1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(2.0), new Market(),null);
+        Selection selection1ForEvent1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(10.5), new Market(), null);
+        Selection selection2ForEvent1 = new Selection(UUID.fromString("0b13d2e4-edba-41a4-889b-2b11d24544a2"), "aaaaaa", BigDecimal.valueOf(2.0), new Market(), null);
         Market market1ForEvent1 = new Market(UUID.fromString("940ec9e2-cc4d-4c3f-a9cc-a804760272f8"), "Double Chance", null, null, Arrays.asList(selection1ForEvent1, selection2ForEvent1));
         Market market2ForEvent1 = new Market(UUID.fromString("d69e0c62-1715-4764-92d9-f33200b17e2e"), "Double Chance", null, null, Arrays.asList(selection1ForEvent1, selection2ForEvent1));
 
 
-        Selection selection1ForEvent2 = new Selection(UUID.fromString("a92e3ec6-c468-4be2-b0d2-7e1e55c558c5"), "aaaaaa", BigDecimal.valueOf(16534.5), new Market(),null);
-        Selection selection2ForEvent2 = new Selection(UUID.fromString("a001749a-6c39-4bae-a140-d730e88deb1d"), "aaaaaa", BigDecimal.valueOf(6.0), new Market(),null);
+        Selection selection1ForEvent2 = new Selection(UUID.fromString("a92e3ec6-c468-4be2-b0d2-7e1e55c558c5"), "aaaaaa", BigDecimal.valueOf(16534.5), new Market(), null);
+        Selection selection2ForEvent2 = new Selection(UUID.fromString("a001749a-6c39-4bae-a140-d730e88deb1d"), "aaaaaa", BigDecimal.valueOf(6.0), new Market(), null);
         Market marketForEvent2 = new Market(UUID.fromString("fed7d852-aa11-41a5-9435-bdb82a03904e"), "Double Chance", null, null, Arrays.asList(selection2ForEvent2, selection1ForEvent2));
 
 
@@ -250,8 +250,8 @@ class EventServiceImplTest {
     void getEventsWithNMarketsAndNotSport(String sport, int numMarket, Page<Event> expected, Event event) {
         Pageable pageable = PageRequest.of(0, 3);
         Event event2 = generateEvent();
-        Participant participant1 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "basketball", "Moldova", 342);
-        Participant participant2 = new Participant(UUID.fromString("9d9254ac-1257-11ed-861d-0242ac120002"), "Sferiff", "basketball", "Moldova", 342);
+        Participant participant1 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "basketball", "Moldova", "342");
+        Participant participant2 = new Participant(UUID.fromString("9d9254ac-1257-11ed-861d-0242ac120002"), "Sferiff", "basketball", "Moldova", "342");
         event2.setParticipants(Arrays.asList(participant1, participant2));
         List<Event> allEvents = Arrays.asList(event, event2);
         when(eventRepository.findAll()).thenReturn(allEvents);
@@ -294,8 +294,8 @@ class EventServiceImplTest {
         Event event1 = generateEvent();
         Event event2 = generateEvent();
         Event event3 = generateEvent();
-        Participant participant1ForEvent3 = new Participant(UUID.fromString("a10217a6-89f9-4a1c-b0ae-27b050e3170a"), "ddddd", "football", "Moldova", 342);
-        Participant participant2ForEvent3 = new Participant(UUID.fromString("fcf2ee35-53a6-43df-9410-133506ddb6f8"), "ffff", "football", "Moldova", 342);
+        Participant participant1ForEvent3 = new Participant(UUID.fromString("a10217a6-89f9-4a1c-b0ae-27b050e3170a"), "ddddd", "football", "Moldova", "342");
+        Participant participant2ForEvent3 = new Participant(UUID.fromString("fcf2ee35-53a6-43df-9410-133506ddb6f8"), "ffff", "football", "Moldova", "342");
 
         event1.setId(UUID.randomUUID());
         event2.setId(UUID.randomUUID());

@@ -16,15 +16,19 @@ public class CompetitionController {
 
     private final CompetitionService competitionService;
 
-    @GetMapping("all_competitions")
-    public List<Competition> getCompetitionList() {
-        return competitionService.getAllCompetition();
-    }
 
     @PostMapping("new_competition")
     public Competition createCompetition(@RequestBody Competition competition) {
         return competitionService.saveCompetition(competition);
     }
+
+
+    @GetMapping("all_competitions")
+    public List<Competition> getCompetitionList() {
+        return competitionService.getAllCompetition();
+    }
+
+
 
     @GetMapping("{id}")
     public Competition getCompetitionById(@PathVariable UUID id) {

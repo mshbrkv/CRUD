@@ -104,7 +104,7 @@ class MarketFacadeImplTest {
         ParticipantServiceImpl participantService;
 
         private static Stream<Arguments> updateParticipantProvider() {
-            Participant fromBD = new Participant(UUID.randomUUID(), "Sferiff", "football", "Moldova", 342);
+            Participant fromBD = new Participant(UUID.randomUUID(), "Sferiff", "football", "Moldova", "342");
             Participant edit = fromBD;
             edit.setName("Test");
 
@@ -115,9 +115,9 @@ class MarketFacadeImplTest {
         }
 
         private static Stream<Arguments> searchFlexibleProvider() {
-            Participant fromBD1 = new Participant(UUID.randomUUID(), "Sheriff", "football", "Moldova", 342);
-            Participant fromBD2 = new Participant(UUID.randomUUID(), "Sheriff", "football", "Moldova", 342);
-            Participant fromBD3 = new Participant(UUID.randomUUID(), "Colibri", "dance", "Moldova", 654);
+            Participant fromBD1 = new Participant(UUID.randomUUID(), "Sheriff", "football", "Moldova", "342");
+            Participant fromBD2 = new Participant(UUID.randomUUID(), "Sheriff", "football", "Moldova", "342");
+            Participant fromBD3 = new Participant(UUID.randomUUID(), "Colibri", "dance", "Moldova", "654");
 
             List<Participant> participants1 = Arrays.asList(fromBD1, fromBD2);
             Page<Participant> participants1Page = new PageImpl<>(participants1);
@@ -132,7 +132,7 @@ class MarketFacadeImplTest {
         }
 
         private static Stream<Arguments> findParticipantByIdProvider() {
-            Participant fromBD = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
+            Participant fromBD = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", "342");
 
             return Stream.of(
                     Arguments.of(fromBD),
@@ -142,7 +142,7 @@ class MarketFacadeImplTest {
 
         @Test
         void saveParticipant() {
-            Participant expected = new Participant(UUID.randomUUID(), "Sferiff", "football", "Moldova", 342);
+            Participant expected = new Participant(UUID.randomUUID(), "Sferiff", "football", "Moldova", "342");
 
             when(participantRepository.save(expected)).thenReturn(expected);
 
@@ -155,8 +155,8 @@ class MarketFacadeImplTest {
         @Test
         void getAllParticipantList() {
             Pageable pageable = PageRequest.of(0, 3);
-            Participant participant1 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 342);
-            Participant participant2 = new Participant(UUID.fromString("9d9260ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", 654);
+            Participant participant1 = new Participant(UUID.fromString("9d9239ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", "342");
+            Participant participant2 = new Participant(UUID.fromString("9d9260ac-1257-11ed-861d-0242ac120002"), "Sferiff", "football", "Moldova", "654");
             List<Participant> participantList = Arrays.asList(participant1, participant2);
             Page<Participant> participantPage = new PageImpl<>(participantList);
 

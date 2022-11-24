@@ -19,7 +19,6 @@ public class Producer {
 
     public void sendMessage(Selection selection) {
         ListenableFuture<SendResult<String, org.example.messaging.Selection>> future = kafkaTemplate.send("t.trading.selection", selection.getId().toString(), selection);
-        System.out.println(selection);
         future.addCallback(new ListenableFutureCallback<SendResult<String, org.example.messaging.Selection>>() {
             @Override
             public void onFailure(Throwable ex) {
